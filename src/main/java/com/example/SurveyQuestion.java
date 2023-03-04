@@ -1,17 +1,19 @@
+package com.example;
+
 import jakarta.persistence.*;
 
 @Entity
-public class Survey {
+public class SurveyQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public Survey(Long id) {
+    public SurveyQuestion(Long id) {
         this.id = id;
     }
 
-    public Survey() {
+    public SurveyQuestion() {
 
     }
 
