@@ -1,16 +1,18 @@
 package com.example;
 
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 import java.util.ArrayList;
 
 public class MultipleChoiceQuestionTest {
     ArrayList<String> list = new ArrayList<>();
     MultipleChoiceQuestion mcq;
 
-    @Before
-    public void setUp(){
+    @BeforeEach
+    public void setUp() {
         list.add("Very Bad");
         list.add("Bad");
         list.add("Ok");
@@ -24,17 +26,16 @@ public class MultipleChoiceQuestionTest {
     }
 
     @Test
-    public void removeOption(){
+    public void removeOption() {
         mcq.removeOption(1);
         assertEquals("Ok", mcq.getOption(1));
         assertEquals(4, mcq.getOptions().size());
     }
 
     @Test
-    public void addOption(){
+    public void addOption() {
         mcq.addOption("New");
         mcq.addOption("Very New");
-        System.out.println(mcq.getOptions());
         assertEquals(7, mcq.getOptions().size());
     }
 }
