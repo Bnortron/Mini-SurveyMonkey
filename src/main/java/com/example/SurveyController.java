@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
 public class SurveyController {
     @Autowired
     private final SurveyRepository surveyRepository;
