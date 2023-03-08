@@ -11,7 +11,7 @@ public class TextQuestionTest {
 
     @BeforeEach
     public void setUp() {
-        textQuestion = new TextQuestion();
+        textQuestion = new TextQuestion("test desc", 200);
         assertEquals("", textQuestion.getResponse());
     }
 

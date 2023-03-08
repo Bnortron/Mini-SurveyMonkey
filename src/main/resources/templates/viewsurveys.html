@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Surveys</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1em;
+    }
+
+    th, td {
+      padding: 0.5em;
+      border: 1px solid black;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    th:last-child,
+    td:last-child {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>View Surveys</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Active</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="survey : ${surveys}">
+    <td th:text="${survey.id}"></td>
+    <td th:text="${survey.title}"></td>
+    <td th:text="${survey.description}"></td>
+    <td><a th:href="@{/survey/{id}/show(id=${survey.id})}">View Details</a></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

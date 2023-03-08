@@ -2,6 +2,9 @@ package com.example;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Survey {
     @Id
@@ -9,12 +12,24 @@ public class Survey {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey")
+    private List<SurveyQuestion> questions;
+
+    @Column(name = "status")
+    private boolean status = false;
+
     public Survey(Long id) {
         this.id = id;
     }
 
     public Survey() {
-
+        this.questions = new ArrayList<>();
     }
 
     public Long getId() {
@@ -23,5 +38,37 @@ public class Survey {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<SurveyQuestion> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<SurveyQuestion> questions) {
+        this.questions = questions;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
