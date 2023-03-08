@@ -11,7 +11,7 @@ public class NumberQuestionTest {
 
     @BeforeEach
     public void setUp() {
-        numberQuestion = new NumberQuestion(1, 5);
+        numberQuestion = new NumberQuestion("test desc", 1, 5);
         assertEquals(-1, numberQuestion.getSelectedValue());
         assertEquals(1, numberQuestion.getMinRange());
         assertEquals(5, numberQuestion.getMaxRange());

@@ -1,14 +1,22 @@
 package com.example;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class NumberQuestion extends SurveyQuestion {
+    private String description; // question description
+    private int minRange; // starting number on num line
+    private int maxRange; // final number on num line
+    private int selectedValue = -1; // value user selects
 
-    private int minRange;
-    private int maxRange;
-    private int selectedValue = -1;
-
-    public NumberQuestion(int minRange, int maxRange) {
+    public NumberQuestion(String description, int minRange, int maxRange) {
+        this.description = description;
         this.minRange = minRange;
         this.maxRange = maxRange;
+    }
+
+    public NumberQuestion() {
+
     }
 
     public int getMinRange() {

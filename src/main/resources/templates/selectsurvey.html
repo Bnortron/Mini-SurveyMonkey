@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Survey</title>
+</head>
+<body>
+<h1>Select Survey</h1>
+<form method="get" th:action="@{/survey}">
+    <label for="surveySelect">Select Survey:</label>
+    <select id="surveySelect" name="selectedSurvey" required="required">
+        <option value="" selected disabled hidden>-- Select a Survey --</option>
+        <th:block th:each="survey : ${surveys}">
+            <option th:value="${survey.id}" th:text="${survey.title}"></option>
+        </th:block>
+    </select>
+    <br/><br/>
+    <button type="submit">View Survey</button>
+</form>
+</body>
+</html>

@@ -18,7 +18,7 @@ public class MultipleChoiceQuestionTest {
         list.add("Ok");
         list.add("Good");
         list.add("Great");
-        mcq = new MultipleChoiceQuestion(list);
+        mcq = new MultipleChoiceQuestion("test desc", list.size(), list);
         mcq.setSelectedOption(1);
         assertEquals("Bad", mcq.getOption(1));
         assertEquals(1, mcq.getSelectedOption());

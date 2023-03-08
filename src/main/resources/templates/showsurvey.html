@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Survey</title>
+    <style>
+        div {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        p {
+            padding: 0.5em;
+            border: 1px solid black;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>Survey</h1>
+<div>
+    <p>ID: <span th:text="${survey.id}"></span></p>
+    <p>Title: <span th:text="${survey.title}"></span></p>
+    <p>Description: <span th:text="${survey.description}"></span></p>
+    <p> View Another Survey <a href="/selectsurvey">here</a></p>
+</div>
+</body>
+</html>
