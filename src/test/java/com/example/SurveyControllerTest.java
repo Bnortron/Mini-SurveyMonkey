@@ -55,5 +55,15 @@ public class SurveyControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("surveys",
                         Matchers.everyItem(samePropertyValuesAs(s, "id", "questions", "status"))));
+        mockMvc.perform(get("/survey?selectedSurvey=1", ""))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.view().name("showsurvey"))
+                .andExpect(MockMvcResultMatchers.model().attribute("survey",
+                        Matchers.samePropertyValuesAs(s, "id", "questions", "status")));
+        mockMvc.perform(get("/survey?selectedSurvey=1", ""))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.view().name("showsurvey"))
+                .andExpect(MockMvcResultMatchers.model().attribute("survey",
+                        Matchers.samePropertyValuesAs(s, "id", "questions", "status")));
     }
 }

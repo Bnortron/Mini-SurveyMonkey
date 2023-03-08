@@ -41,7 +41,7 @@
     <td th:text="${survey.id}"></td>
     <td th:text="${survey.title}"></td>
     <td th:text="${survey.description}"></td>
-    <td><a th:href="@{/survey/{id}/show(id=${survey.id})}">View Details</a></td>
+    <td><a th:href="${'/survey?selectedSurvey=' + survey.id}">View Details</a></td>
   </tr>
   </tbody>
 </table>

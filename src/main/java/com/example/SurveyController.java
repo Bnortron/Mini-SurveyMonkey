@@ -50,25 +50,6 @@ public class SurveyController {
     }
 
     /**
-     * Displays the single Survey chosen from the list of ALL Surveys
-     *
-     * @param surveyId the id of the Survey to view
-     * @param model
-     * @return
-     */
-    @GetMapping("/survey/view")
-    public String viewSurvey(@RequestParam("surveyId") Long surveyId, Model model) {
-        Optional<Survey> surveyOptional = surveyRepository.findById(surveyId);
-        if (!surveyOptional.isPresent()) {
-            // handle the case where the survey with the given id does not exist
-            return "error";
-        }
-        Survey survey = surveyOptional.get();
-        model.addAttribute("survey", survey);
-        return "showsurvey";
-    }
-
-    /**
      * Displays the single Survey selected from the list of Surveys
      * NOTE: Future implementation will include ALL questions stored in this Survey as well
      *
