@@ -7,20 +7,21 @@ public class SurveyQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    protected Long id;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id", nullable = false)
-    private Survey survey;
+    @JoinColumn(name = "survey_id")
+    protected Survey survey;
 
     @Enumerated(EnumType.STRING)
-    private QuestionType questionType;
+    protected QuestionType questionType;
 
-    private String description;
-    private int questionOrder; // order of the question in the survey (1=first question, 2=second question,.., n=nth question in survey)
+    protected String description;
+    protected int questionOrder; // order of the question in the survey (1=first question, 2=second question,.., n=nth question in survey)
 
     /**
      * SurveyQuestion constructor using ID
+     *
      * @param id
      */
     public SurveyQuestion(Long id) {
@@ -36,6 +37,7 @@ public class SurveyQuestion {
 
     /**
      * Getter for ID
+     *
      * @return SurveyQuestion ID
      */
     public Long getId() {
@@ -44,6 +46,7 @@ public class SurveyQuestion {
 
     /**
      * Setter for ID
+     *
      * @param id the ID to set to this SurveyQuestion
      */
     public void setId(Long id) {

@@ -32,6 +32,7 @@ public class SurveyController {
      */
     @PostMapping("/survey")
     public String saveSurvey(@ModelAttribute Survey survey) {
+        System.out.println(survey);
         surveyRepository.save(survey);
         return "index";
     }
@@ -71,9 +72,9 @@ public class SurveyController {
 
     /**
      * View ALL Surveys stored in database
-     *
+     * <p>
      * NOTE: The "View Details" option in the table should bring user to Survey page (if Survey = open)
-     *       and allow them to begin responding to the questions (Starts the Survey for the user)
+     * and allow them to begin responding to the questions (Starts the Survey for the user)
      *
      * @param model
      * @return
