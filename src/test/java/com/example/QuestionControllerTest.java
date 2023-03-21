@@ -21,16 +21,23 @@ class QuestionControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testCreateTextQuestion() throws Exception {
+    public void testCreateTextQuestionAndView() throws Exception {
+        TextQuestion q = new TextQuestion();
+        q.setDescription("Do you like ice cream?");
+        q.setCharLimit(500);
         mockMvc.perform(get("/createquestion", ""))
                 .andDo(print()).andExpect(MockMvcResultMatchers.view().name("createquestion"));
         mockMvc.perform(post("/textquestion", "")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("description", "Tell me your thoughts about the current social and economic state of the world?")
-                        .param("charLimit", "555"))
+                        .param("description", "Do you like ice cream?")
+                        .param("charLimit", "500"))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(status().is2xxSuccessful());
+        mockMvc.perform(get("/viewquestions", ""))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.model().attribute("surveyquestions",
+                        Matchers.everyItem(samePropertyValuesAs(q, "id", "survey", "questionOrder", "response"))));
     }
 
     @Test
@@ -59,23 +66,4 @@ class QuestionControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(status().is2xxSuccessful());
     }
-
-    @Test
-    public void testViewQuestions() throws Exception {
-        TextQuestion q = new TextQuestion();
-        q.setDescription("Do you like ice cream?");
-        q.setCharLimit(500);
-        mockMvc.perform(post("/textquestion", "")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("description", "Do you like ice cream?")
-                        .param("charLimit", "500"))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.view().name("index"))
-                .andExpect(status().is2xxSuccessful());
-        mockMvc.perform(get("/viewquestions", ""))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.model().attribute("surveyquestions",
-                        Matchers.everyItem(samePropertyValuesAs(q, "id", "survey", "questionOrder", "response"))));
-    }
-
 }
