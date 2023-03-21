@@ -27,7 +27,7 @@
     <p>Title: <span th:text="${survey.title}"></span></p>
     <p>Description: <span th:text="${survey.description}"></span></p>
     <p>Questions:</p>
-    <form>
+    <form action="/response" method="POST">
         <div th:each="question: ${survey.getQuestions()}">
             <th:block th:switch="${question.getQuestionType()}">
                 <div th:case="${T(com.example.QuestionType).MULTIPLE_CHOICE}">
@@ -41,6 +41,7 @@
                 </div>
             </th:block>
         </div>
+        <input type="submit">
     </form>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
 </div>

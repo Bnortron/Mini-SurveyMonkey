@@ -80,25 +80,4 @@ public class QuestionController {
         model.addAttribute("surveyquestions", questions);
         return "viewquestions";
     }
-
-    @GetMapping("/question")
-    public String viewQuestion(@RequestParam("selectedQuestion") Long selectedQuestionId, Model model){
-        Optional<SurveyQuestion> question = questionRepository.findById(selectedQuestionId);
-        if( question.isEmpty()){
-            return "index";
-        }
-        model.addAttribute("question", question.get());
-        switch (question.get().getQuestionType()){
-            case MULTIPLE_CHOICE -> {
-                return "multiplechoicequestion";
-            }
-            case NUMBER_CHOICE_LINE -> {
-                return "numberquestion";
-            }
-            case TEXT -> {
-                return "textquestion";
-            }
-        }
-        return "index";
-    }
 }

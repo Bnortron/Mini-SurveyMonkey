@@ -33,7 +33,6 @@
         <th>ID</th>
         <th>Description</th>
         <th>Type</th>
-        <th>View</th>
     </tr>
     </thead>
     <tbody>
@@ -41,7 +40,6 @@
         <td th:text="${surveyquestion.id}"></td>
         <td th:text="${surveyquestion.description}"></td>
         <td th:text="${surveyquestion.questionType}"></td>
-        <td><a th:href="${'/question?selectedQuestion=' + surveyquestion.id}">view</a></td>
     </tr>
     </tbody>
 </table>
