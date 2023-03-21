@@ -73,7 +73,6 @@ public class SurveyController {
         }
         Survey survey = surveyOptional.get();
         model.addAttribute("survey", survey);
-        System.out.println(survey.getQuestions().size());
         return "showsurvey";
     }
 
