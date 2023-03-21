@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Questions</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            padding: 0.5em;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+
+        th:last-child,
+        td:last-child {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>View Questions</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="surveyquestion : ${surveyquestions}">
+        <td th:text="${surveyquestion.id}"></td>
+        <td th:text="${surveyquestion.description}"></td>
+        <td th:text="${surveyquestion.questionType}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

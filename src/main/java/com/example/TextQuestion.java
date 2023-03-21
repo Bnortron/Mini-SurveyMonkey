@@ -4,17 +4,18 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class TextQuestion extends SurveyQuestion {
-    private String description;
     private int charLimit;
     private String response = "";
 
-    public TextQuestion(String description, int charLimit) {
-        this.description = description;
+    public TextQuestion(int charLimit) {
+        super();
+        this.questionType = QuestionType.TEXT;
         this.charLimit = charLimit;
     }
 
     public TextQuestion() {
-
+        super();
+        this.questionType = QuestionType.TEXT;
     }
 
     public String getResponse() {
@@ -23,5 +24,13 @@ public class TextQuestion extends SurveyQuestion {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public int getCharLimit() {
+        return charLimit;
+    }
+
+    public void setCharLimit(int charLimit) {
+        this.charLimit = charLimit;
     }
 }

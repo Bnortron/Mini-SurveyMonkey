@@ -5,15 +5,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.List;
 
 @Controller
 public class SurveyController {
     @Autowired
     private final SurveyRepository surveyRepository;
 
-    public SurveyController(SurveyRepository surveyRepository) {
+    @Autowired
+    private final QuestionRepository questionRepository;
+
+    public SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
         this.surveyRepository = surveyRepository;
+        this.questionRepository = questionRepository;
     }
 
     @GetMapping("/createsurvey")
@@ -31,24 +38,9 @@ public class SurveyController {
      */
     @PostMapping("/survey")
     public String saveSurvey(@ModelAttribute Survey survey) {
+        System.out.println(survey);
         surveyRepository.save(survey);
         return "index";
-    }
-
-    /**
-     * View ALL Surveys stored in database
-     *
-     * NOTE: The "View Details" option in the table should bring user to Survey page (if Survey = open)
-     *       and allow them to begin responding to the questions (Starts the Survey for the user)
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping("/viewsurveys")
-    public String viewSurveys(Model model) {
-        Iterable<Survey> surveys = surveyRepository.findAll();
-        model.addAttribute("surveys", surveys);
-        return "viewsurveys";
     }
 
     /**
@@ -76,11 +68,28 @@ public class SurveyController {
     public String showSurvey(@RequestParam("selectedSurvey") Long selectedSurveyId, Model model) {
         Optional<Survey> surveyOptional = surveyRepository.findById(selectedSurveyId);
         if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
             return "error";
         }
         Survey survey = surveyOptional.get();
         model.addAttribute("survey", survey);
         return "showsurvey";
+    }
+
+    /**
+     * View ALL Surveys stored in database
+     * <p>
+     * NOTE: The "View Details" option in the table should bring user to Survey page (if Survey = open)
+     * and allow them to begin responding to the questions (Starts the Survey for the user)
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/viewsurveys")
+    public String viewSurveys(Model model) {
+        Iterable<Survey> surveys = surveyRepository.findAll();
+        model.addAttribute("surveys", surveys);
+        return "viewsurveys";
     }
 
     @PostMapping("/survey/{id}/activate")
@@ -92,6 +101,43 @@ public class SurveyController {
             surveyRepository.save(survey);
         }
         return "redirect:/survey?selectedSurvey=" + id;
+    }
+
+
+    @GetMapping("/addquestion")
+    public String selectQuestion(Model model) {
+        Iterable<Survey> surveys = surveyRepository.findAll();
+        Iterable<SurveyQuestion> questions = questionRepository.findBySurvey(null);
+        model.addAttribute("surveys", surveys);
+        model.addAttribute("questions", questions);
+        return "addquestion";
+    }
+
+    @PostMapping("/addquestion")
+    public String addQuestion(@RequestParam("selectedSurvey") Long selectedSurveyId, @RequestParam("selectedQuestion") Long selectedQuestionId, Model model) {
+        Optional<Survey> surveyOptional = surveyRepository.findById(selectedSurveyId);
+        if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
+            return "error";
+        }
+        Survey survey = surveyOptional.get();
+
+        Optional<SurveyQuestion> questionOptional = questionRepository.findById(selectedQuestionId);
+        if (!questionOptional.isPresent()) {
+            // handle the case where the question with the given id does not exist
+            return "error";
+        }
+        SurveyQuestion question = questionOptional.get();
+
+        List<SurveyQuestion> questions = survey.getQuestions();
+        questions.add(question);
+        survey.setQuestions(questions);
+        surveyRepository.save(survey);
+
+        question.setSurvey(survey);
+        questionRepository.save(question);
+
+        return "index";
     }
 
     @PostMapping("/survey/{id}/deactivate")
