@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Number Question</title>
+</head>
+<body>
+<form>
+    <div th:fragment="num">
+        <div th:text="${question.getDescription()}"></div>
+        <input type="number" th:min="${question.getMinRange()}" th:max="${question.getMaxRange()}"/>
+    </div>
+    <input type="submit" />
+</form>
+</body>
+</html>
