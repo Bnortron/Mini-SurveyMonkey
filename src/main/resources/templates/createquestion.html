@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Create Question</h1>
+
+<label for="questionType">Select A Question:</label>
+<select id="questionType" name="questionType" required="required" onchange="update(this.value)">
+    <option value="" selected disabled hidden>-- Select a Question --</option>
+    <option value="TEXT">Text Question</option>
+    <option value="NUMBER_CHOICE_LINE">Number Question</option>
+    <option value="MULTIPLE_CHOICE">Multiple Choice Question</option>
+</select><br><br>
+
+<div id="questionContent">
+</div>
+
+
+<script th:inline="javascript">
+    var type = "";
+    let externalHTML = "";
+
+    function update() {
+        type = document.getElementById("questionType").value;
+        const main = document.getElementById('questionContent');
+        if (type === "TEXT") {
+            externalHTML = `
+                <form method="post" action="/textquestion">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+                    <label for="charLimit">Character Limit:</label>
+                    <input type="number" id="charLimit" name="charLimit" required><br><br>
+                    <input type="submit" value="Add Question">
+                </form>
+            `;
+        } else if (type === "NUMBER_CHOICE_LINE") {
+            externalHTML = `
+                <form method="post" action="/numberquestion">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+                    <label for="minRange">Minimum Range:</label>
+                    <input type="number" id="minRange" name="minRange" required><br><br>
+                    <label for="maxRange">Maximum Range:</label>
+                    <input type="number" id="maxRange" name="maxRange" required><br><br>
+
+                    <input type="submit" value="Add Question">
+                </form>
+            `;
+        } else {
+            externalHTML = `
+                <form method="post" action="/mcquestion">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+
+                    <label for="listOfOptions">Options: (place comma between options)</label><br>
+                    <textarea rows = "5" cols = "60" id="listOfOptions" name="listOfOptions" required></textarea><br><br>
+
+                    <!--<input type="button" value="Add Option"><br><br>-->
+                    <input type="submit" value="Add Question">
+                </form>
+            `;
+        }
+        main.innerHTML = externalHTML;
+    }
+
+    /*
+        function updateOptions() {
+            const newInput = document.createElement("input");
+            newInput.class = "mcqOption";
+            document.getElementById('options').appendChild(newInput);
+        }
+
+        function gatherOptions() {
+            let listOfOptions = "";
+            let list = document.getElementsByClassName('mcqOption');
+            for (i = 0; i < list.length; i++) {
+                listOfOptions += list[i].value + ',';
+            }
+
+        }
+    */
+
+</script>
+
+</body>
+</html>

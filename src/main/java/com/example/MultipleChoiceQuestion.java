@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 public class MultipleChoiceQuestion extends SurveyQuestion {
-    private String description; // question desc
     private int numChoices; // number of MC options user can select from
     private int selectedOption = -1; // the option the user selected
 
@@ -17,14 +16,16 @@ public class MultipleChoiceQuestion extends SurveyQuestion {
     private List<String> options = new ArrayList<>();
 
 
-    public MultipleChoiceQuestion(String description, int numChoices, ArrayList<String> options) {
-        this.description = description;
+    public MultipleChoiceQuestion(int numChoices, ArrayList<String> options) {
+        super();
+        this.questionType = QuestionType.MULTIPLE_CHOICE;
         this.numChoices = numChoices;
         this.options = options;
     }
 
     public MultipleChoiceQuestion() {
-
+        super();
+        this.questionType = QuestionType.MULTIPLE_CHOICE;
     }
 
     public List<String> getOptions() {
