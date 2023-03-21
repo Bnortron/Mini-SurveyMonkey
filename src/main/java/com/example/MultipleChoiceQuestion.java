@@ -18,14 +18,14 @@ public class MultipleChoiceQuestion extends SurveyQuestion {
 
     public MultipleChoiceQuestion(int numChoices, ArrayList<String> options) {
         super();
-        this.questionType = QuestionType.valueOf("MULTIPLE_CHOICE");
+        this.questionType = QuestionType.MULTIPLE_CHOICE;
         this.numChoices = numChoices;
         this.options = options;
     }
 
     public MultipleChoiceQuestion() {
         super();
-        this.questionType = QuestionType.valueOf("MULTIPLE_CHOICE");
+        this.questionType = QuestionType.MULTIPLE_CHOICE;
     }
 
     public List<String> getOptions() {

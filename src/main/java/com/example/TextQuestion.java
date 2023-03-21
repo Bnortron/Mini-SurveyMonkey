@@ -9,13 +9,13 @@ public class TextQuestion extends SurveyQuestion {
 
     public TextQuestion(int charLimit) {
         super();
-        this.questionType = QuestionType.valueOf("TEXT");
+        this.questionType = QuestionType.TEXT;
         this.charLimit = charLimit;
     }
 
     public TextQuestion() {
         super();
-        this.questionType = QuestionType.valueOf("TEXT");
+        this.questionType = QuestionType.TEXT;
     }
 
     public String getResponse() {

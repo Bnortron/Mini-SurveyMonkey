@@ -9,13 +9,13 @@ public class NumberQuestion extends SurveyQuestion {
     private int selectedValue = -1; // value user selects
 
     public NumberQuestion(int minRange, int maxRange) {
-        this.questionType = QuestionType.valueOf("NUMBER_CHOICE_LINE");
+        this.questionType = QuestionType.NUMBER_CHOICE_LINE;
         this.minRange = minRange;
         this.maxRange = maxRange;
     }
 
     public NumberQuestion() {
-        this.questionType = QuestionType.valueOf("NUMBER_CHOICE_LINE");
+        this.questionType = QuestionType.NUMBER_CHOICE_LINE;
 
     }
 
