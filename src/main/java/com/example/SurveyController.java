@@ -6,15 +6,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.List;
 
 @Controller
 public class SurveyController {
     @Autowired
     private final SurveyRepository surveyRepository;
 
-    public SurveyController(SurveyRepository surveyRepository) {
+    @Autowired
+    private final QuestionRepository questionRepository;
+
+    public SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
         this.surveyRepository = surveyRepository;
+        this.questionRepository = questionRepository;
     }
 
     @GetMapping("/createsurvey")
@@ -67,6 +73,7 @@ public class SurveyController {
         }
         Survey survey = surveyOptional.get();
         model.addAttribute("survey", survey);
+        System.out.println(survey.getQuestions().size());
         return "showsurvey";
     }
 
@@ -84,5 +91,41 @@ public class SurveyController {
         Iterable<Survey> surveys = surveyRepository.findAll();
         model.addAttribute("surveys", surveys);
         return "viewsurveys";
+    }
+
+    @GetMapping("/addquestion")
+    public String selectQuestion(Model model) {
+        Iterable<Survey> surveys = surveyRepository.findAll();
+        Iterable<SurveyQuestion> questions = questionRepository.findBySurvey(null);
+        model.addAttribute("surveys", surveys);
+        model.addAttribute("questions", questions);
+        return "addquestion";
+    }
+
+    @PostMapping("/addquestion")
+    public String addQuestion(@RequestParam("selectedSurvey") Long selectedSurveyId, @RequestParam("selectedQuestion") Long selectedQuestionId, Model model) {
+        Optional<Survey> surveyOptional = surveyRepository.findById(selectedSurveyId);
+        if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
+            return "error";
+        }
+        Survey survey = surveyOptional.get();
+
+        Optional<SurveyQuestion> questionOptional = questionRepository.findById(selectedQuestionId);
+        if (!questionOptional.isPresent()) {
+            // handle the case where the question with the given id does not exist
+            return "error";
+        }
+        SurveyQuestion question = questionOptional.get();
+
+        List<SurveyQuestion> questions = survey.getQuestions();
+        questions.add(question);
+        survey.setQuestions(questions);
+        surveyRepository.save(survey);
+
+        question.setSurvey(survey);
+        questionRepository.save(question);
+
+        return "index";
     }
 }
