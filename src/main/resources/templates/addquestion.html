@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Question to Survey</title>
+</head>
+<body>
+<h1>Add Question to Survey</h1>
+<form method="post" th:action="@{/addquestion}">
+    <label for="surveySelect">Select Survey:</label>
+    <select id="surveySelect" name="selectedSurvey" required="required">
+        <option value="" selected disabled hidden>-- Select a Survey --</option>
+        <th:block th:each="survey : ${surveys}">
+            <option th:value="${survey.id}" th:text="${survey.title}"></option>
+        </th:block>
+    </select>
+    <br/><br/>
+    <label for="questionSelect">Select Question:</label>
+    <select id="questionSelect" name="selectedQuestion" required="required">
+        <option value="" selected disabled hidden>-- Select a Question --</option>
+        <th:block th:each="question : ${questions}">
+            <option th:value="${question.id}" th:text="${question.description}"></option>
+        </th:block>
+    </select>
+    <br/><br/>
+    <button type="submit">Add</button>
+</form>
+</body>
+</html>

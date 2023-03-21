@@ -66,4 +66,31 @@ public class SurveyControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attribute("survey",
                         Matchers.samePropertyValuesAs(s, "id", "questions", "status")));
     }
+
+    @Test
+    public void testAddQuestion() throws Exception {
+        mockMvc.perform(post("/survey", "")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("title", "test")
+                        .param("description", "test"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.view().name("index"))
+                .andExpect(status().is2xxSuccessful());
+        mockMvc.perform(post("/textquestion", "")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("description", "Do you like ice cream?")
+                        .param("charLimit", "500"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.view().name("index"))
+                .andExpect(status().is2xxSuccessful());
+        mockMvc.perform(get("/addquestion", ""))
+                .andDo(print()).andExpect(MockMvcResultMatchers.view().name("addquestion"));
+        mockMvc.perform(post("/addquestion", "")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("selectedSurvey", "1")
+                        .param("selectedQuestion", "1"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.view().name("index"))
+                .andExpect(status().is2xxSuccessful());
+    }
 }
