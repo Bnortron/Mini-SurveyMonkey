@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Show Survey</title>
-    <style>
-        div {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 1em;
-        }
-
-        p {
-            padding: 0.5em;
-            border: 1px solid black;
-        }
-
-        h1 {
-            text-align: center;
-        }
-    </style>
+    <link th:href="@{/css/showsurveyStyle.css}" rel="stylesheet" />
 </head>
+
 <body>
-<h1>Survey</h1>
+<h1>Survey: <span th:text="${survey.title}"></span> </h1>
+<!-- Form for the Activate Button (if Survey is currently inactive) -->
+<form action="#" th:action="@{'/survey/' + ${survey.id} + '/activate'}" method="post">
+    <button th:if="${!survey.active}" type="submit" name="Activate" class="activate">Activate</button>
+</form>
+<!-- Form for the Deactivate button (if Survey is currently active) -->
+<form action="#" th:action="@{'/survey/' + ${survey.id} + '/deactivate'}" method="post">
+    <button th:if="${survey.active}" type="submit" name="Deactivate" class="deactivate">Deactivate</button>
+</form>
 <div>
     <p>ID: <span th:text="${survey.id}"></span></p>
     <p>Title: <span th:text="${survey.title}"></span></p>
     <p>Description: <span th:text="${survey.description}"></span></p>
+    <p>Active: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
+    <p> Return Home <a href="/">here</a></p>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>View Surveys</title>
@@ -13,6 +14,7 @@
     th, td {
       padding: 0.5em;
       border: 1px solid black;
+      text-align: center;
     }
 
     th {
@@ -21,6 +23,10 @@
 
     th:last-child,
     td:last-child {
+      text-align: center;
+    }
+
+    h1 {
       text-align: center;
     }
   </style>
@@ -33,7 +39,8 @@
     <th>ID</th>
     <th>Title</th>
     <th>Description</th>
-    <th>Active</th>
+    <th>Status</th>
+    <th>View Details</th>
   </tr>
   </thead>
   <tbody>
@@ -41,7 +48,8 @@
     <td th:text="${survey.id}"></td>
     <td th:text="${survey.title}"></td>
     <td th:text="${survey.description}"></td>
-    <td><a th:href="${'/survey?selectedSurvey=' + survey.id}">View Details</a></td>
+    <td th:text="${survey.active} ? 'Active' : 'Inactive'"></td>
+    <td><a th:href="@{'/survey?selectedSurvey=' + ${survey.id}}">View Details</a></td>
   </tr>
   </tbody>
 </table>

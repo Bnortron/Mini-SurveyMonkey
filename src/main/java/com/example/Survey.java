@@ -21,8 +21,8 @@ public class Survey {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey")
     private List<SurveyQuestion> questions;
 
-    @Column(name = "status")
-    private boolean status = false;
+    @Column(name = "active")
+    private boolean active = false;
 
     public Survey(Long id) {
         this.id = id;
@@ -64,11 +64,11 @@ public class Survey {
         this.questions = questions;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getActive() {
+        return active;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setActive(boolean b) {
+        this.active = b;
     }
 }

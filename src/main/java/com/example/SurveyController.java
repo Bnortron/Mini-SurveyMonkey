@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -37,6 +36,22 @@ public class SurveyController {
     }
 
     /**
+     * View ALL Surveys stored in database
+     *
+     * NOTE: The "View Details" option in the table should bring user to Survey page (if Survey = open)
+     *       and allow them to begin responding to the questions (Starts the Survey for the user)
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/viewsurveys")
+    public String viewSurveys(Model model) {
+        Iterable<Survey> surveys = surveyRepository.findAll();
+        model.addAttribute("surveys", surveys);
+        return "viewsurveys";
+    }
+
+    /**
      * Select a Survey to view (Displays Survey properties - not survey questions)
      *
      * @param model
@@ -61,7 +76,6 @@ public class SurveyController {
     public String showSurvey(@RequestParam("selectedSurvey") Long selectedSurveyId, Model model) {
         Optional<Survey> surveyOptional = surveyRepository.findById(selectedSurveyId);
         if (!surveyOptional.isPresent()) {
-            // handle the case where the survey with the given id does not exist
             return "error";
         }
         Survey survey = surveyOptional.get();
@@ -69,19 +83,26 @@ public class SurveyController {
         return "showsurvey";
     }
 
-    /**
-     * View ALL Surveys stored in database
-     *
-     * NOTE: The "View Details" option in the table should bring user to Survey page (if Survey = open)
-     *       and allow them to begin responding to the questions (Starts the Survey for the user)
-     *
-     * @param model
-     * @return
-     */
-    @GetMapping("/viewsurveys")
-    public String viewSurveys(Model model) {
-        Iterable<Survey> surveys = surveyRepository.findAll();
-        model.addAttribute("surveys", surveys);
-        return "viewsurveys";
+    @PostMapping("/survey/{id}/activate")
+    public String activateSurvey(@PathVariable("id") Long id) {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(id);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            survey.setActive(true);
+            surveyRepository.save(survey);
+        }
+        return "redirect:/survey?selectedSurvey=" + id;
     }
+
+    @PostMapping("/survey/{id}/deactivate")
+    public String deactivateSurvey(@PathVariable("id") Long id) {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(id);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            survey.setActive(false);
+            surveyRepository.save(survey);
+        }
+        return "redirect:/survey?selectedSurvey=" + id;
+    }
+
 }
