@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>multiplechoicequestion</title>
+</head>
+<body>
+    <form>
+        <div th:fragment="mcq">
+            <div th:text="${question.getDescription()}"></div>
+            <Tdiv th:each="Option: ${question.getOptions()}">
+                <input type="radio" th:id="${Option}" th:name="${question.getId()}" th:value="${Option}">
+                <label th:for="${Option}" th:text="${Option}"></label>
+            </Tdiv>
+        </div>
+        <input type="submit" />
+    </form>
+</body>
+</html>

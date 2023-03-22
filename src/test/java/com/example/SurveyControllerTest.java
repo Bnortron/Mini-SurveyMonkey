@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -92,5 +94,24 @@ public class SurveyControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void testViewSurvey() throws Exception {
+        Survey s = new Survey();
+        s.setTitle("test");
+        s.setDescription("test");
+        ArrayList<SurveyQuestion> questions = new ArrayList<>();
+        TextQuestion txtQ = new TextQuestion(500);
+        txtQ.setDescription("Do you like ice cream?");
+        questions.add(txtQ);
+        s.setQuestions(questions);
+
+        mockMvc.perform(get("/survey?selectedSurvey=1"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.model().attribute("survey",
+                        Matchers.samePropertyValuesAs(s, "id", "questions", "status")))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.view().name("showsurvey"));
     }
 }
