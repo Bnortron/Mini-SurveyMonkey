@@ -92,18 +92,6 @@ public class SurveyController {
         return "viewsurveys";
     }
 
-    @PostMapping("/survey/{id}/activate")
-    public String activateSurvey(@PathVariable("id") Long id) {
-        Optional<Survey> optionalSurvey = surveyRepository.findById(id);
-        if (optionalSurvey.isPresent()) {
-            Survey survey = optionalSurvey.get();
-            survey.setActive(true);
-            surveyRepository.save(survey);
-        }
-        return "redirect:/survey?selectedSurvey=" + id;
-    }
-
-
     @GetMapping("/addquestion")
     public String selectQuestion(Model model) {
         Iterable<Survey> surveys = surveyRepository.findAll();
@@ -140,6 +128,29 @@ public class SurveyController {
         return "index";
     }
 
+    /**
+     * Activate a Survey - Will allow users to respond to it's questions
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/survey/{id}/activate")
+    public String activateSurvey(@PathVariable("id") Long id) {
+        Optional<Survey> optionalSurvey = surveyRepository.findById(id);
+        if (optionalSurvey.isPresent()) {
+            Survey survey = optionalSurvey.get();
+            survey.setActive(true);
+            surveyRepository.save(survey);
+        }
+        return "redirect:/survey?selectedSurvey=" + id;
+    }
+
+    /**
+     * Deactivate a Survey - Users no longer allowed to respond to it's questions
+     *
+     * @param id
+     * @return
+     */
     @PostMapping("/survey/{id}/deactivate")
     public String deactivateSurvey(@PathVariable("id") Long id) {
         Optional<Survey> optionalSurvey = surveyRepository.findById(id);
