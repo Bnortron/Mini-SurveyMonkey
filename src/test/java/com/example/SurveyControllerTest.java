@@ -111,6 +111,7 @@ public class SurveyControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("survey",
                         Matchers.samePropertyValuesAs(s, "id", "questions", "status")))
-                .andExpect(status().is2xxSuccessful());;
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.view().name("showsurvey"));
     }
 }
