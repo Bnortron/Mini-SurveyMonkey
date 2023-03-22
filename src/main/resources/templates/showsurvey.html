@@ -21,6 +21,7 @@
     <p>ID: <span th:text="${survey.id}"></span></p>
     <p>Title: <span th:text="${survey.title}"></span></p>
     <p>Description: <span th:text="${survey.description}"></span></p>
+    <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p>Questions:</p>
     <form action="/response" method="POST">
         <div th:each="question: ${survey.getQuestions()}">
@@ -36,9 +37,8 @@
                 </div>
             </th:block>
         </div>
-        <input type="submit">
+        <input th:if="${survey.active}" type="submit">
     </form>
-    <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
     <p> Return Home <a href="/">here</a></p>
 </div>
