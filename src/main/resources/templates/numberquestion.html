@@ -8,7 +8,7 @@
 <body>
 <form>
     <div th:fragment="num">
-        <div th:text="${question.getDescription()}"></div>
+        <div th:text="${question.getDescription() + ' (Range:' + question.getMinRange() + '-' + question.getMaxRange() + ')'}"></div>
         <input type="range" th:min="${question.getMinRange()}" th:max="${question.getMaxRange()}"/>
     </div>
     <input type="submit" />
