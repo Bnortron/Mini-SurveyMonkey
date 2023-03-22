@@ -64,3 +64,8 @@ button:active {
     box-shadow: none;
     transform: translateY(0);
 }
+
+.question {
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}

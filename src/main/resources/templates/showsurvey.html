@@ -22,9 +22,9 @@
     <p>Title: <span th:text="${survey.title}"></span></p>
     <p>Description: <span th:text="${survey.description}"></span></p>
     <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
-    <p>Questions:</p>
+    <p>Questions: <span th:text="${survey.getQuestions().size()}"></span></p>
     <form action="/response" method="POST">
-        <div th:each="question: ${survey.getQuestions()}">
+        <div th:each="question: ${survey.getQuestions()}" class="question">
             <th:block th:switch="${question.getQuestionType()}">
                 <div th:case="${T(com.example.QuestionType).MULTIPLE_CHOICE}">
                     <div th:replace="multiplechoicequestion.html :: mcq"></div>
