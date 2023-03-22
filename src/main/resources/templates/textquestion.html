@@ -9,7 +9,7 @@
 <form>
     <div th:fragment="text">
         <div th:text="${question.getDescription()}"></div>
-        <input type="text" th:maxlength="${question.getCharLimit()}"/>
+        <textarea th:maxlength="${question.getCharLimit()}"></textarea>
     </div>
     <input type="submit" />
 </form>
