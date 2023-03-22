@@ -7,7 +7,6 @@
     <title>Show Survey</title>
     <link th:href="@{/css/showsurveyStyle.css}" rel="stylesheet" />
 </head>
-
 <body>
 <h1>Survey: <span th:text="${survey.title}"></span> </h1>
 <!-- Form for the Activate Button (if Survey is currently inactive) -->
@@ -22,6 +21,23 @@
     <p>ID: <span th:text="${survey.id}"></span></p>
     <p>Title: <span th:text="${survey.title}"></span></p>
     <p>Description: <span th:text="${survey.description}"></span></p>
+    <p>Questions:</p>
+    <form action="/response" method="POST">
+        <div th:each="question: ${survey.getQuestions()}">
+            <th:block th:switch="${question.getQuestionType()}">
+                <div th:case="${T(com.example.QuestionType).MULTIPLE_CHOICE}">
+                    <div th:replace="multiplechoicequestion.html :: mcq"></div>
+                </div>
+                <div th:case="${T(com.example.QuestionType).TEXT}">
+                    <div th:replace="textquestion.html :: text"></div>
+                </div>
+                <div th:case="${T(com.example.QuestionType).NUMBER_CHOICE_LINE}">
+                    <div th:replace="numberquestion.html :: num"></div>
+                </div>
+            </th:block>
+        </div>
+        <input type="submit">
+    </form>
     <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
     <p> Return Home <a href="/">here</a></p>

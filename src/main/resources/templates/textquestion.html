@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Question</title>
+</head>
+<body>
+<form>
+    <div th:fragment="text">
+        <div th:text="${question.getDescription()}"></div>
+        <textarea th:maxlength="${question.getCharLimit()}"></textarea>
+    </div>
+    <input type="submit" />
+</form>
+</body>
+</html>
