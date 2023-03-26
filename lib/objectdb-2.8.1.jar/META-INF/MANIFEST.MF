@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Main-Class: com.objectdb.ServerRunner
+Agent-Class: com.objectdb.JEnhancerAgent
+Can-Retransform-Classes: true
+Can-Redefine-Classes: true
+Premain-Class: com.objectdb.JEnhancerAgent
+Bundle-Description: ObjectDB Bundle
+Bundle-ManifestVersion: 2
+Bundle-Name: ObjectDB
+Bundle-SymbolicName: com.objectdb
+Bundle-Version: 2.8.1
+Bundle-Vendor: ObjectDB Software
+Export-Package: com.objectdb;uses:="com.objectdb.o,javax.persistence.spi,javax.jdo,javax.persistence",
+  com.objectdb.spi;uses:="com.objectdb.o,javax.persistence.spi,javax.jdo,javax.persistence",
+  javax.jdo;uses:="javax.naming,javax.xml.parsers,javax.jdo.spi,org.w3c.dom,org.xml.sax,javax.jdo.listener,javax.jdo.datastore,javax.transaction",
+  javax.jdo.annotations,
+  javax.jdo.datastore,
+  javax.jdo.identity,
+  javax.jdo.listener,
+  javax.persistence;uses:="javax.persistence.criteria,javax.persistence.metamodel",
+  javax.persistence.criteria,
+  javax.persistence.metamodel
+Import-Package: javax.naming,
+ javax.xml.parsers,
+ javax.xml.transform,
+ org.osgi.framework,
+ org.xml.sax

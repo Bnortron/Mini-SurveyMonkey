@@ -1,0 +1,11 @@
+ObjectDB Enhancer [version <$version>]
+Copyright (c) <$year>, ObjectDB Software. All rights reserved.
+
+Usage: java com.objectdb.Enhancer [ <options> | <class> | <filename> ] ...
+  <class> - name of a class (without .class suffix) in the CLASSPATH
+  <filename> - path to class or jar file(s), *? wildcards supported
+  <options> include:
+    -cp <dir>  :  path to input user classes
+    -pu <name> :  persistence unit name
+    -s         :  include sub directories in search
+    -d <dir>   :  output path for enhanced classes
