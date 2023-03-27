@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
+//@Controller
 public class SurveyResponseController {
-
-    @Autowired
+    /*
+    //@Autowired
     private final SurveyResponseRepository surveyResponseRepository;
 
 
@@ -21,4 +21,6 @@ public class SurveyResponseController {
         surveyResponseRepository.save(response);
         return "index";
     }
+
+     */
 }
