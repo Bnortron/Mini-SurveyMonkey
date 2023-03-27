@@ -1,28 +1,34 @@
 package com.example;
 
-import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Survey {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "description")
     private String description;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey")
+    private boolean active;
     private List<SurveyQuestion> questions;
 
-    @Column(name = "active")
-    private boolean active = false;
+    // Constructor, getters, and setters
+
+    // ObjectDB-specific annotations
+    @javax.persistence.Id
+    public Long getObjectId() {
+        return id;
+    }
+
+    public void setObjectId(Long id) {
+        this.id = id;
+    }
+
 
     public Survey(Long id) {
         this.id = id;

@@ -1,6 +1,7 @@
 package com.example;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.objectdb.ObjectDBSurveyQuestionRepository;
+import com.example.objectdb.ObjectDBSurveyRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +11,12 @@ import java.util.List;
 
 @Controller
 public class SurveyController {
-    @Autowired
-    private final SurveyRepository surveyRepository;
+    private final ObjectDBSurveyRepository surveyRepository;
+    private final ObjectDBSurveyQuestionRepository surveyQuestionRepository;
 
-    @Autowired
-    private final QuestionRepository questionRepository;
-
-    public SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
+    public SurveyController(ObjectDBSurveyRepository surveyRepository, ObjectDBSurveyQuestionRepository surveyQuestionRepository) {
         this.surveyRepository = surveyRepository;
-        this.questionRepository = questionRepository;
+        this.surveyQuestionRepository = surveyQuestionRepository;
     }
 
     @GetMapping("/createsurvey")
@@ -93,7 +91,7 @@ public class SurveyController {
     @GetMapping("/addquestion")
     public String selectQuestion(Model model) {
         Iterable<Survey> surveys = surveyRepository.findAll();
-        Iterable<SurveyQuestion> questions = questionRepository.findBySurvey(null);
+        Iterable<SurveyQuestion> questions = surveyQuestionRepository.findBySurvey(null);
         model.addAttribute("surveys", surveys);
         model.addAttribute("questions", questions);
         return "addquestion";
@@ -108,7 +106,7 @@ public class SurveyController {
         }
         Survey survey = surveyOptional.get();
 
-        Optional<SurveyQuestion> questionOptional = questionRepository.findById(selectedQuestionId);
+        Optional<SurveyQuestion> questionOptional = surveyQuestionRepository.findById(selectedQuestionId);
         if (!questionOptional.isPresent()) {
             // handle the case where the question with the given id does not exist
             return "error";
@@ -121,7 +119,7 @@ public class SurveyController {
         surveyRepository.save(survey);
 
         question.setSurvey(survey);
-        questionRepository.save(question);
+        surveyQuestionRepository.save(question);
 
         return "index";
     }

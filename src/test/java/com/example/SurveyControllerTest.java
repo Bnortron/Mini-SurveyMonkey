@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.objectdb.ObjectDBSurveyRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -38,7 +39,7 @@ public class SurveyControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private SurveyRepository surveyRepository;
+    private ObjectDBSurveyRepository surveyRepository;
 
 
     @Test
