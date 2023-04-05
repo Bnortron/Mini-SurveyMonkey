@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
     <title>Show Survey</title>
     <link th:href="@{/css/showsurveyStyle.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
-<body>
-<h1>Survey: <span th:text="${survey.title}"></span> </h1>
+<body style="text-align: center">
+<h1 style="display: inline-block">Survey: <span th:text="${survey.title}"></span> </h1>
 <!-- Form for the Activate Button (if Survey is currently inactive) -->
 <form action="#" th:action="@{'/survey/' + ${survey.id} + '/activate'}" method="post">
     <button th:if="${!survey.active}" type="submit" name="Activate" class="activate">Activate</button>
@@ -17,6 +18,7 @@
 <form action="#" th:action="@{'/survey/' + ${survey.id} + '/deactivate'}" method="post">
     <button th:if="${survey.active}" type="submit" name="Deactivate" class="deactivate">Deactivate</button>
 </form>
+<br><br>
 <div>
     <p>ID: <span th:text="${survey.id}"></span></p>
     <p>Title: <span th:text="${survey.title}"></span></p>
@@ -41,12 +43,13 @@
     </form>
     <p> Add a Question to the Survey <a th:href="@{'/addquestion?survey=' + ${survey.id}}">here</a></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
-    <p> Return Home <a href="/">here</a></p>
 </div>
 <!-- Home Button -->
 <br>
 <form method="get" action="/">
-    <input type="submit" value="Return Home">
+    <div class="grid-item">
+        <button type="submit" class="button-85" role="button">RETURN HOME</button>
+    </div>
 </form>
 </body>
 </html>

@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Question</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
 
 <h1>Create Question</h1>
 
+<div class="grid-item-2">
 <label for="questionType">Select A Question:</label>
-<select id="questionType" name="questionType" required="required" onchange="update(this.value)">
-    <option value="" selected disabled hidden>-- Select a Question --</option>
-    <option value="TEXT">Text Question</option>
-    <option value="NUMBER_CHOICE_LINE">Number Question</option>
-    <option value="MULTIPLE_CHOICE">Multiple Choice Question</option>
-</select><br><br>
+    <select id="questionType" name="questionType" required="required" onchange="update(this.value)">
+        <option value="" selected disabled hidden>-- Select a Question --</option>
+        <option value="TEXT">Text Question</option>
+        <option value="NUMBER_CHOICE_LINE">Number Question</option>
+        <option value="MULTIPLE_CHOICE">Multiple Choice Question</option>
+    </select><br><br>
 
-<div id="questionContent">
+    <div id="questionContent">
+    </div>
 </div>
-
 <div hidden="true" id="surveyId" th:text="${surveyId}"></div>
 
 <script th:inline="javascript">
@@ -38,7 +40,9 @@
                     <input type="text" id="description" name="description" required><br><br>
                     <label for="charLimit">Character Limit:</label>
                     <input type="number" id="charLimit" name="charLimit" required><br><br>
-                    <input type="submit" value="Add Question">
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
                 </form>
             `;
         } else if (type === "NUMBER_CHOICE_LINE") {
@@ -52,7 +56,9 @@
                     <label for="maxRange">Maximum Range:</label>
                     <input type="number" id="maxRange" name="maxRange" required><br><br>
 
-                    <input type="submit" value="Add Question">
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
                 </form>
             `;
         } else {
@@ -66,7 +72,9 @@
                     <textarea rows = "5" cols = "60" id="listOfOptions" name="listOfOptions" required></textarea><br><br>
 
                     <!--<input type="button" value="Add Option"><br><br>-->
-                    <input type="submit" value="Add Question">
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
                 </form>
             `;
         }
@@ -76,7 +84,9 @@
 <!-- Home Button -->
 <br>
 <form method="get" action="/">
-    <input type="submit" value="Return Home">
+    <div class="grid-item">
+        <button type="submit" class="button-85" role="button">RETURN HOME</button>
+    </div>
 </form>
 </body>
 </html>
