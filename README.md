@@ -2,6 +2,8 @@
 
 Public repository for the SYSC 4806 Project 2 team
 
+![Status](https://github.com/Bnortron/SYSC4806-Team2/actions/workflows/integration.yaml/badge.svg)
+
 ## Milestone 1:
 
 - Setup Github Actions
