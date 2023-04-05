@@ -4,24 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Select Survey</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
 <h1>Select Survey</h1>
 <form method="get" th:action="@{/survey}">
-    <label for="surveySelect">Select Survey:</label>
-    <select id="surveySelect" name="selectedSurvey" required="required">
-        <option value="" selected disabled hidden>-- Select a Survey --</option>
-        <th:block th:each="survey : ${surveys}">
-            <option th:value="${survey.id}" th:text="${survey.title}"></option>
-        </th:block>
-    </select>
-    <br/><br/>
-    <button type="submit" name="submit" value="Submit">View Survey</button>
+    <div class="grid-item">
+        <label for="surveySelect">Select Survey:</label>
+        <select id="surveySelect" name="selectedSurvey" required="required">
+            <option value="" selected disabled hidden>-- Select a Survey --</option>
+            <th:block th:each="survey : ${surveys}">
+                <option th:value="${survey.id}" th:text="${survey.title}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div class="grid-item">
+        <button type="submit" name="submit" value="Submit" class="button-85" role="button">VIEW SURVEY</button>
+    </div>
 </form>
 <!-- Home Button -->
 <br>
 <form method="get" action="/">
-    <input type="submit" value="Return Home">
+    <div class="grid-item">
+        <button type="submit" class="button-85" role="button">RETURN HOME</button>
+    </div>
 </form>
 </body>
 </html>

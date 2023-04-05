@@ -5,12 +5,33 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" th:href="@{/css/signin.css}"/>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
-<p> Create a Survey <a href="/createsurvey">here</a></p>
-<p> View All Surveys <a href="/viewsurveys">here</a></p>
-<p> View Specific Survey <a href="/selectsurvey">here</a></p>
-<p> View Results (Not Implemented) <a href="/removesurvey">here</a></p>
-<p> View H2 Console <a href="http://localhost:8080/h2-console">here</a> </p>
+<div class="context">
+    <h1>Mini-Survey Monkey</h1>
+    <div class="grid-container">
+        <div class="grid-item"><a href="/createsurvey"><button class="button-85" role="button">CREATE A SURVEY</button></a></div>
+        <div class="grid-item"><a href="/viewsurveys"><button class="button-85" role="button">VIEW ALL SURVEYS</button></a></div>
+        <div class="grid-item"><a href="/selectsurvey"><button class="button-85" role="button">VIEW SPECIFIC SURVEY</button></a></div>
+        <div class="grid-item"><a href="/removesurvey"><button class="button-85" role="button">VIEW RESULTS</button></a></div>
+        <div class="grid-item"><a href="http://localhost:8080/h2-console"><button class="button-85" role="button">VIEW H2 CONSOLE</button></a></div>
+    </div>
+</div>
+
+<div class="area" >
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div >
 </body>
 </html>
