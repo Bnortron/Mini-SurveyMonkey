@@ -39,6 +39,7 @@
         </div>
         <input th:if="${survey.active}" type="submit">
     </form>
+    <p> Add a Question to the Survey <a th:href="@{'/addquestion?survey=' + ${survey.id}}">here</a></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
     <p> Return Home <a href="/">here</a></p>
 </div>

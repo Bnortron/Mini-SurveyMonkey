@@ -91,12 +91,79 @@ public class SurveyController {
     }
 
     @GetMapping("/addquestion")
-    public String selectQuestion(Model model) {
-        Iterable<Survey> surveys = surveyRepository.findAll();
-        Iterable<SurveyQuestion> questions = questionRepository.findBySurvey(null);
-        model.addAttribute("surveys", surveys);
-        model.addAttribute("questions", questions);
+    public String selectQuestion(@RequestParam("survey") Long surveyId, Model model) {
+        model.addAttribute("surveyId", surveyId);
+        model.addAttribute("surveyquestion", new SurveyQuestion());
         return "addquestion";
+    }
+
+    @PostMapping("/addtextquestion/{id}")
+    public String textQuestion(@ModelAttribute TextQuestion textQuestion, @PathVariable("id") Long surveyId) {
+        System.out.println(textQuestion.getId());
+
+        Optional<Survey> surveyOptional = surveyRepository.findById(surveyId);
+        if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
+            return "error";
+        }
+        Survey survey = surveyOptional.get();
+        System.out.println("id: " + survey.getId());
+        textQuestion.setSurvey(survey);
+        //questionRepository.save(textQuestion);
+
+        List<SurveyQuestion> questions = survey.getQuestions();
+        questions.add(textQuestion);
+        survey.setQuestions(questions);
+        surveyRepository.save(survey);
+
+        return "redirect:/survey?selectedSurvey=" + survey.getId();
+    }
+
+    @PostMapping("/addnumberquestion/{id}")
+    public String saveNumberQuestion(@ModelAttribute NumberQuestion numberQuestion, @PathVariable("id") Long surveyId) {
+        System.out.println(numberQuestion.getMaxRange());
+
+        Optional<Survey> surveyOptional = surveyRepository.findById(surveyId);
+        if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
+            return "error";
+        }
+        Survey survey = surveyOptional.get();
+        System.out.println("id: " + survey.getId());
+        numberQuestion.setSurvey(survey);
+        //questionRepository.save(numberQuestion);
+
+        List<SurveyQuestion> questions = survey.getQuestions();
+        questions.add(numberQuestion);
+        survey.setQuestions(questions);
+        surveyRepository.save(survey);
+
+        return "redirect:/survey?selectedSurvey=" + survey.getId();
+    }
+
+    @PostMapping("/addmcquestion/{id}")
+    public String saveMcQuestion(@RequestParam("listOfOptions") String list, @ModelAttribute MultipleChoiceQuestion mcQuestion, @PathVariable("id") Long surveyId) {
+        String[] listArr = list.split(",");
+        for (String s : listArr) {
+            mcQuestion.addOption(s);
+        }
+
+        Optional<Survey> surveyOptional = surveyRepository.findById(surveyId);
+        if (!surveyOptional.isPresent()) {
+            // handle the case where the survey with the given id does not exist
+            return "error";
+        }
+        Survey survey = surveyOptional.get();
+        System.out.println("id: " + survey.getId());
+        mcQuestion.setSurvey(survey);
+        //questionRepository.save(mcQuestion);
+
+        List<SurveyQuestion> questions = survey.getQuestions();
+        questions.add(mcQuestion);
+        survey.setQuestions(questions);
+        surveyRepository.save(survey);
+
+        return "redirect:/survey?selectedSurvey=" + survey.getId();
     }
 
     @PostMapping("/addquestion")
