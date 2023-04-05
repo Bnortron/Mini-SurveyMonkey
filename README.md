@@ -180,3 +180,113 @@ TextQuestion  -->  SurveyQuestion
 - Fix bugs that cause duplicate Survey if user refreshes page when trying to add a question
 - Determine final scope of project
 - Analyze Survey results and produce graphs/plots based on Survey questions
+
+## Milestone 3: Final Demo
+
+- Added home button to pages
+- Updated process of adding questions to surveys
+- Updated styling of pages
+- Added unit tests for Survey class
+- Added CI badge
+
+### Schemas:
+
+![image](https://user-images.githubusercontent.com/65249711/230168268-e0c25081-0b0c-4fbd-a202-69fe30868df7.png)
+![image](https://user-images.githubusercontent.com/65249711/230168475-21922927-8cb4-4745-b5ea-5f2ad7284350.png)
+![image](https://user-images.githubusercontent.com/65249711/230168560-c0a3f057-656e-49b4-a909-ed39fb6af7ba.png)
+![image](https://user-images.githubusercontent.com/65249711/230168629-7e706feb-7ff7-404d-8fbe-b003c96fe927.png)
+![image](https://user-images.githubusercontent.com/65249711/230168702-c28edfab-ac84-4699-89b9-5d9d2d4a0361.png)
+![image](https://user-images.githubusercontent.com/65249711/230168768-8c473064-b769-4dc9-81ef-acbea5c14fb1.png)
+
+### UML Diagram:
+```mermaid
+classDiagram
+direction BT
+class MultipleChoiceQuestion {
+  - int selectedOption
+  - List~String~ options
+  - int numChoices
+  + getOptions() List~String~
+  + removeOption(int) void
+  + getSelectedOption() int
+  + getOption(int) String
+  + addOption(String) void
+  + setOptions(List~String~) void
+  + setSelectedOption(int) void
+}
+class NumberQuestion {
+  - int minRange
+  - int maxRange
+  - int selectedValue
+  + setMinRange(int) void
+  + getMaxRange() int
+  + getMinRange() int
+  + setSelectedValue(int) void
+  + getSelectedValue() int
+  + setMaxRange(int) void
+}
+class QuestionType {
+<<enumeration>>
+  +  MULTIPLE_CHOICE
+  +  NUMBER_CHOICE_LINE
+  +  TEXT
+  + valueOf(String) QuestionType
+  + values() QuestionType[]
+}
+class Survey {
+  - String description
+  - List~SurveyQuestion~ questions
+  - boolean active
+  - Long id
+  - String title
+  + setId(Long) void
+  + setDescription(String) void
+  + getId() Long
+  + setTitle(String) void
+  + getActive() boolean
+  + getTitle() String
+  + setQuestions(List~SurveyQuestion~) void
+  + setActive(boolean) void
+  + getDescription() String
+  + getQuestions() List~SurveyQuestion~
+}
+class SurveyQuestion {
+  # QuestionType questionType
+  # Long id
+  # Survey survey
+  # int questionOrder
+  # String description
+  + setId(Long) void
+  + getQuestionType() QuestionType
+  + getSurvey() Survey
+  + setQuestionType(QuestionType) void
+  + getDescription() String
+  + getOrder() int
+  + setSurvey(Survey) void
+  + setDescription(String) void
+  + setOrder(int) void
+  + getId() Long
+}
+class SurveyResponse {
+  - Long id
+  + getId() Long
+  + setId(Long) void
+}
+class SurveyResult {
+  - Long id
+  + getId() Long
+  + setId(Long) void
+}
+class TextQuestion {
+  - int charLimit
+  - String response
+  + getResponse() String
+  + setCharLimit(int) void
+  + setResponse(String) void
+  + getCharLimit() int
+}
+
+MultipleChoiceQuestion  -->  SurveyQuestion 
+NumberQuestion  -->  SurveyQuestion 
+TextQuestion  -->  SurveyQuestion 
+```
