@@ -1,11 +1,12 @@
-package com.example;
+package com.example.Questions;
 
+import com.example.Responses.Response;
+import com.example.Responses.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +15,17 @@ public class QuestionController {
     @Autowired
     private final QuestionRepository questionRepository;
 
-    public QuestionController(QuestionRepository questionRepository) {
+    @Autowired
+    private final ResponseRepository responseRepository;
+
+    public QuestionController(QuestionRepository questionRepository, ResponseRepository responseRepository) {
         this.questionRepository = questionRepository;
+        this.responseRepository = responseRepository;
     }
 
     @GetMapping("/createquestion")
     public String createQuestion(Model model) {
-        model.addAttribute("surveyquestion", new SurveyQuestion());
+        model.addAttribute("surveyquestion", new Question());
         //model.addAttribute("listOfOptions", new ArrayList<String>());
         return "createquestion";
     }
@@ -74,10 +79,27 @@ public class QuestionController {
      * @param model
      * @return
      */
-    @GetMapping("/viewquestions")
-    public String selectQuestion(Model model) {
-        Iterable<SurveyQuestion> questions = questionRepository.findAll();
-        model.addAttribute("surveyquestions", questions);
-        return "viewquestions";
+    @GetMapping("/selectedresponse")
+    public String getSelectedResponse(@RequestParam(name = "selectedResponse") Long selectedResponseId, Model model) {
+        // Get the selected response from the repository
+        Optional<Response> selectedResponse = responseRepository.findById(selectedResponseId);
+
+        if (selectedResponse.isPresent()) {
+            // Get the corresponding survey question
+            Question question = selectedResponse.get().getQuestion();
+
+            // Get the responses for the selected survey question
+            List<Response> questionResponses = responseRepository.findByQuestion(question);
+
+            // Add the selected response and the list of question responses to the model
+            model.addAttribute("selectedResponse", selectedResponse.get());
+            model.addAttribute("questionResponses", questionResponses);
+
+            // Return the name of the Thymeleaf template to use
+            return "selectresponse";
+        } else {
+            // If the selected response does not exist, redirect to the home page
+            return "redirect:/";
+        }
     }
 }

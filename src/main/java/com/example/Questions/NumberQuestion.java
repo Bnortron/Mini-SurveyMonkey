@@ -1,9 +1,9 @@
-package com.example;
+package com.example.Questions;
 
 import jakarta.persistence.Entity;
 
 @Entity
-public class NumberQuestion extends SurveyQuestion {
+public class NumberQuestion extends Question {
     private int minRange; // starting number on num line
     private int maxRange; // final number on num line
     private int selectedValue = -1; // value user selects

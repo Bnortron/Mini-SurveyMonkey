@@ -1,9 +1,10 @@
-package com.example;
+package com.example.Questions;
 
+import com.example.Surveys.Survey;
 import jakarta.persistence.*;
 
 @Entity
-public class SurveyQuestion {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -24,14 +25,14 @@ public class SurveyQuestion {
      *
      * @param id
      */
-    public SurveyQuestion(Long id) {
+    public Question(Long id) {
         this.id = id;
     }
 
     /**
      * SurveyQuestion blank constructor
      */
-    public SurveyQuestion() {
+    public Question() {
 
     }
 
@@ -53,6 +54,7 @@ public class SurveyQuestion {
         this.id = id;
     }
 
+    // Getter & Setter for Survey this Question belongs to
     public Survey getSurvey() {
         return survey;
     }
@@ -61,6 +63,7 @@ public class SurveyQuestion {
         this.survey = survey;
     }
 
+    // Getter & Setter for the Question Type
     public QuestionType getQuestionType() {
         return questionType;
     }
@@ -69,6 +72,7 @@ public class SurveyQuestion {
         this.questionType = questionType;
     }
 
+    // Getter & Setter for Question description
     public String getDescription() {
         return description;
     }
@@ -77,6 +81,7 @@ public class SurveyQuestion {
         this.description = description;
     }
 
+    // Getter & Setter for the order in the Survey that the question appears
     public int getOrder() {
         return questionOrder;
     }

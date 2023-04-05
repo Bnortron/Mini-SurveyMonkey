@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Show Survey</title>
-    <link th:href="@{/css/showsurveyStyle.css}" rel="stylesheet" />
+    <link th:href="@{css/showsurveyStyle.css}" rel="stylesheet"/>
 </head>
 <body>
-<h1>Survey: <span th:text="${survey.title}"></span> </h1>
+<h1>Survey: <span th:text="${survey.title}"></span></h1>
 <!-- Form for the Activate Button (if Survey is currently inactive) -->
 <form action="#" th:action="@{'/survey/' + ${survey.id} + '/activate'}" method="post">
     <button th:if="${!survey.active}" type="submit" name="Activate" class="activate">Activate</button>
@@ -23,17 +23,25 @@
     <p>Description: <span th:text="${survey.description}"></span></p>
     <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p>Questions: <span th:text="${survey.getQuestions().size()}"></span></p>
-    <form action="/response" method="POST">
-        <div th:each="question: ${survey.getQuestions()}" class="question">
-            <th:block th:switch="${question.getQuestionType()}">
-                <div th:case="${T(com.example.QuestionType).MULTIPLE_CHOICE}">
-                    <div th:replace="multiplechoicequestion.html :: mcq"></div>
+
+    <form method="post" th:action="@{/submitresponses}">
+        <div th:each="question : ${survey.getQuestions()}" class="question">
+            <p th:text="${question.description}"></p>
+            <th:block th:switch="${question.questionType}">
+                <div th:case="MULTIPLE_CHOICE">
+                    <div th:each="option : ${question.getOptions()}">
+                        <input type="radio" th:name="${question.id}" th:value="${option}" th:if="${survey.active}"/>
+                        <label th:for="${option}" th:text="${option}"></label>
+                    </div>
                 </div>
-                <div th:case="${T(com.example.QuestionType).TEXT}">
-                    <div th:replace="textquestion.html :: text"></div>
+                <div th:case="NUMBER_CHOICE_LINE">
+                    <label th:text="${question.getMinRange()}"></label>
+                    <input type="range" th:name="${question.id}" th:min="${question.getMinRange()}"
+                           th:max="${question.getMaxRange()}" th:if="${survey.active}"/>
+                    <label th:text="${question.getMaxRange()}"></label>
                 </div>
-                <div th:case="${T(com.example.QuestionType).NUMBER_CHOICE_LINE}">
-                    <div th:replace="numberquestion.html :: num"></div>
+                <div th:case="TEXT">
+                    <input type="text" id="${question.id}" name="${question.id}" required th:if="${survey.active}"/>
                 </div>
             </th:block>
         </div>

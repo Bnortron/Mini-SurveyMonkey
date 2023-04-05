@@ -1,5 +1,6 @@
-package com.example;
+package com.example.Surveys;
 
+import com.example.Questions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +12,10 @@ import java.util.List;
 @Controller
 public class SurveyController {
     @Autowired
-    private final SurveyRepository surveyRepository;
+    private SurveyRepository surveyRepository;
 
     @Autowired
-    private final QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     public SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
         this.surveyRepository = surveyRepository;
@@ -93,7 +94,7 @@ public class SurveyController {
     @GetMapping("/addquestion")
     public String selectQuestion(Model model) {
         Iterable<Survey> surveys = surveyRepository.findAll();
-        Iterable<SurveyQuestion> questions = questionRepository.findBySurvey(null);
+        Iterable<Question> questions = questionRepository.findBySurvey(null);
         model.addAttribute("surveys", surveys);
         model.addAttribute("questions", questions);
         return "addquestion";
@@ -108,14 +109,14 @@ public class SurveyController {
         }
         Survey survey = surveyOptional.get();
 
-        Optional<SurveyQuestion> questionOptional = questionRepository.findById(selectedQuestionId);
+        Optional<Question> questionOptional = questionRepository.findById(selectedQuestionId);
         if (!questionOptional.isPresent()) {
             // handle the case where the question with the given id does not exist
             return "error";
         }
-        SurveyQuestion question = questionOptional.get();
+        Question question = questionOptional.get();
 
-        List<SurveyQuestion> questions = survey.getQuestions();
+        List<Question> questions = survey.getQuestions();
         questions.add(question);
         survey.setQuestions(questions);
         surveyRepository.save(survey);
@@ -160,4 +161,10 @@ public class SurveyController {
         return "redirect:/survey?selectedSurvey=" + id;
     }
 
+    @GetMapping("/survey/{id}/viewresponses")
+    public String viewResponses(@PathVariable("id") Long id, Model model) {
+        Survey survey = surveyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+        model.addAttribute("survey", survey);
+        return "viewresponses";
+    }
 }

@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.Questions.TextQuestion;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

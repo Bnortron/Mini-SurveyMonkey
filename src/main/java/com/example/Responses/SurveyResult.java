@@ -1,19 +1,20 @@
-package com.example;
+package com.example.Responses;
 
 import jakarta.persistence.*;
 
 @Entity
-public class SurveyResponse {
+@Table(name = "survey_results")
+public class SurveyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public SurveyResponse(Long id) {
+    public SurveyResult(Long id) {
         this.id = id;
     }
 
-    public SurveyResponse() {
+    public SurveyResult() {
 
     }
 

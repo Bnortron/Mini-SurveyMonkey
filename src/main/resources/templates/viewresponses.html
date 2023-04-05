@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Responses</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1em;
+    }
+
+    th, td {
+      padding: 0.5em;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    th:last-child,
+    td:last-child {
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>View Responses</h1>
+<table>
+  <thead>
+  <tr>
+    <!-- The SurveyQuestion ID -->
+    <th>ID</th>
+    <!-- The SurveyQuestion description -->
+    <th>Question</th>
+    <!-- The number of responses to the question -->
+    <th>Responses</th>
+    <!-- Hyperlink to view the selectresponse.html page which shows list of
+          Responses based on the question type and then the plot at the bottom
+           of the page -->
+    <th>View Responses</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="question : ${questions}">
+    <td th:text="${question.id}"></td>
+    <td th:text="${question.description}"></td>
+    <td th:text="${question.responses.size()}"></td>
+    <td><a th:href="@{'/survey?selectedQuestion=' + ${question.id}}">Show Responses</a></td>
+  </tr>
+  </tbody>
+</table>
+<!-- Home Button -->
+<br>
+<form method="get" action="/">
+  <input type="submit" value="Return Home">
+</form>
+</body>
+</html>

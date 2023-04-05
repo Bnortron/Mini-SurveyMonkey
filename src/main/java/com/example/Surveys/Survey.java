@@ -1,5 +1,6 @@
-package com.example;
+package com.example.Surveys;
 
+import com.example.Questions.Question;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 @Entity
 public class Survey {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -19,7 +20,7 @@ public class Survey {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey")
-    private List<SurveyQuestion> questions;
+    private List<Question> questions;
 
     @Column(name = "active")
     private boolean active = false;
@@ -57,11 +58,11 @@ public class Survey {
         this.description = description;
     }
 
-    public List<SurveyQuestion> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<SurveyQuestion> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 

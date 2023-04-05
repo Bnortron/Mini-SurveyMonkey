@@ -1,9 +1,9 @@
-package com.example;
+package com.example.Questions;
 
 import jakarta.persistence.Entity;
 
 @Entity
-public class TextQuestion extends SurveyQuestion {
+public class TextQuestion extends Question {
     private int charLimit;
     private String response = "";
 
