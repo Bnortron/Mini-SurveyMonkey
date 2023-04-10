@@ -73,6 +73,7 @@ public class ResponseController {
 
         // Save the responses to the database
         responseRepository.saveAll(responses);
+        survey.totalResponses();
 
         // Redirect user back home
         model.addAttribute("survey", survey);

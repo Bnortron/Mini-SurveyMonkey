@@ -228,10 +228,35 @@ public class SurveyController {
         return "redirect:/survey?selectedSurvey=" + id;
     }
 
+    /**
     @GetMapping("/survey/{id}/viewresponses")
     public String viewResponses(@PathVariable("id") Long id, Model model) {
         Survey survey = surveyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
         model.addAttribute("survey", survey);
         return "viewresponses";
     }
+     **/
+
+    @GetMapping("/viewresults")
+    public String viewResults(Model model) {
+        List<Survey> surveys = (List<Survey>) surveyRepository.findAll();
+        model.addAttribute("surveys", surveys);
+        model.addAttribute("question", new Question()); // add this line
+        return "viewresults";
+    }
+
+
+    @GetMapping("/surveys/{id}/questions")
+    public String viewResponses(@PathVariable("id") Long id, Model model) {
+        // Retrieve the survey and questions data based on the surveyId
+        Optional<Survey> survey = surveyRepository.findById(id);
+        List<Question> questions = questionRepository.findBySurvey(Optional.of(survey.get()));
+
+        // Add the survey and questions data to the model for use in the Thymeleaf template
+        model.addAttribute("survey", survey.get());
+        model.addAttribute("questions", questions);
+
+        return "viewresponses";
+    }
+
 }

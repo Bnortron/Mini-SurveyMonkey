@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>View Responses</title>
+  <title>View Surveys</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" />
   <style>
     table {
@@ -33,22 +33,23 @@
   </style>
 </head>
 <body>
-<h1>View Responses</h1>
+<h1>View Surveys</h1>
 <table>
   <thead>
   <tr>
-    <th>Question ID</th>
-    <th>Question Description</th>
-    <th>Number of Responses</th>
+    <th>Survey ID</th>
+    <th>Survey Name</th>
+    <th>Number of Questions</th>
     <th>View Responses</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="question : ${survey.questions}">
-    <td th:text="${question.id}"></td>
-    <td th:text="${question.description}"></td>
-    <td th:text="${question.getResponses().size()}"></td>
-    <td><a th:href="@{'/surveys/' + ${survey.id} + '/questions/' + ${question.id} + '/responses'}">View Responses</a></td>
+  <tr th:each="survey : ${surveys}">
+    <td th:text="${survey.id}"></td>
+    <td th:text="${survey.title}"></td>
+    <td th:text="${survey.questions.size()}"></td>
+    <td><a th:href="@{/surveys/{id}/questions(id=${survey.id})}">View Responses</a></td>
+
   </tr>
   </tbody>
 </table>

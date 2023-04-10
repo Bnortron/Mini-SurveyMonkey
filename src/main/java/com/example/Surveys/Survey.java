@@ -1,6 +1,7 @@
 package com.example.Surveys;
 
 import com.example.Questions.Question;
+import com.example.Responses.Response;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -25,15 +26,26 @@ public class Survey {
     @Column(name = "active")
     private boolean active = false;
 
+    public int responses;
+
+    /**
+     * Constructor for Survey with Generated ID
+     * @param id
+     */
     public Survey(Long id) {
         this.id = id;
     }
 
+    /**
+     * Empty constructor for Survey that creates the questions arraylist
+     */
     public Survey() {
         this.questions = new ArrayList<>();
     }
 
-
+    /**
+     * Getters & Setters
+     */
     public Long getId() {
         return id;
     }
@@ -72,5 +84,16 @@ public class Survey {
 
     public void setActive(boolean b) {
         this.active = b;
+    }
+
+    public int getResponses() { return this.responses; }
+
+    public void totalResponses() {
+        for(Question q : questions) {
+            for(Response r : q.getResponses()) {
+                this.responses++;
+            }
+        }
+        System.out.println("Responses: " + responses);
     }
 }

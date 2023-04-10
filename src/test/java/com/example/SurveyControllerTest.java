@@ -55,6 +55,7 @@ public class SurveyControllerTest {
         Survey s = new Survey();
         s.setTitle("test");
         s.setDescription("test");
+        s.totalResponses();
         mockMvc.perform(post("/survey", "")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "test")
@@ -65,7 +66,7 @@ public class SurveyControllerTest {
         mockMvc.perform(get("/viewsurveys", ""))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("surveys",
-                        Matchers.everyItem(samePropertyValuesAs(s, "id", "questions", "status"))));
+                        Matchers.everyItem(samePropertyValuesAs(s, "id", "questions", "status","responses"))));
         mockMvc.perform(get("/survey?selectedSurvey=1", ""))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.view().name("showsurvey"))
@@ -106,11 +107,12 @@ public class SurveyControllerTest {
         txtQ.setDescription("Do you like ice cream?");
         questions.add(txtQ);
         s.setQuestions(questions);
+        s.totalResponses();
 
         mockMvc.perform(get("/survey?selectedSurvey=1"))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("survey",
-                        Matchers.samePropertyValuesAs(s, "id", "questions", "status")))
+                        Matchers.samePropertyValuesAs(s, "id", "questions", "status", "responses")))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.view().name("showsurvey"));
     }
