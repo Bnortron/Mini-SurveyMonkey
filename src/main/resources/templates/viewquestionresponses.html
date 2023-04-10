@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Question Responses</title>
+  <meta charset="UTF-8" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1em;
+    }
+
+    th, td {
+      padding: 0.5em;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    th:last-child,
+    td:last-child {
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>Question Responses</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Response ID</th>
+    <th>Question ID</th>
+    <th>Survey ID</th>
+    <th>Response Text</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="response : ${responses}">
+    <td th:text="${response.id}"></td>
+    <td th:text="${response.question.id}"></td>
+    <td th:text="${response.survey.id}"></td>
+    <td th:text="${response.response}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
