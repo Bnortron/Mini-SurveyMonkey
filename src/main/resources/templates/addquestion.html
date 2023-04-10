@@ -2,33 +2,91 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Question to Survey</title>
+    <title>Create Question</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>Add Question to Survey</h1>
-<form method="post" th:action="@{/addquestion}">
-    <label for="surveySelect">Select Survey:</label>
-    <select id="surveySelect" name="selectedSurvey" required="required">
-        <option value="" selected disabled hidden>-- Select a Survey --</option>
-        <th:block th:each="survey : ${surveys}">
-            <option th:value="${survey.id}" th:text="${survey.title}"></option>
-        </th:block>
-    </select>
-    <br/><br/>
-    <label for="questionSelect">Select Question:</label>
-    <select id="questionSelect" name="selectedQuestion" required="required">
+
+<h1>Create Question</h1>
+
+<div class="grid-item-2">
+<label for="questionType">Select A Question:</label>
+    <select id="questionType" name="questionType" required="required" onchange="update(this.value)">
         <option value="" selected disabled hidden>-- Select a Question --</option>
-        <th:block th:each="question : ${questions}">
-            <option th:value="${question.id}" th:text="${question.description}"></option>
-        </th:block>
-    </select>
-    <br/><br/>
-    <button type="submit">Add</button>
-</form>
+        <option value="TEXT">Text Question</option>
+        <option value="NUMBER_CHOICE_LINE">Number Question</option>
+        <option value="MULTIPLE_CHOICE">Multiple Choice Question</option>
+    </select><br><br>
+
+    <div id="questionContent">
+    </div>
+</div>
+<div hidden="true" id="surveyId" th:text="${surveyId}"></div>
+
+<script th:inline="javascript">
+    var type = "";
+    let externalHTML = "";
+    var surveyId = document.getElementById("surveyId").innerText;
+    var url = ""
+
+    function update() {
+        type = document.getElementById("questionType").value;
+        const main = document.getElementById('questionContent');
+        if (type === "TEXT") {
+            url = "/addtextquestion/" + surveyId;
+            externalHTML = `
+                <form method="post" action="${url}">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+                    <label for="charLimit">Character Limit:</label>
+                    <input type="number" id="charLimit" name="charLimit" required><br><br>
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
+                </form>
+            `;
+        } else if (type === "NUMBER_CHOICE_LINE") {
+            url = "/addnumberquestion/" + surveyId;
+            externalHTML = `
+                <form method="post" action="${url}">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+                    <label for="minRange">Minimum Range:</label>
+                    <input type="number" id="minRange" name="minRange" required><br><br>
+                    <label for="maxRange">Maximum Range:</label>
+                    <input type="number" id="maxRange" name="maxRange" required><br><br>
+
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
+                </form>
+            `;
+        } else {
+            url = "/addmcquestion/" + surveyId;
+            externalHTML = `
+                <form method="post" action="${url}">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" required><br><br>
+
+                    <label for="listOfOptions">Options: (place comma between options)</label><br>
+                    <textarea rows = "5" cols = "60" id="listOfOptions" name="listOfOptions" required></textarea><br><br>
+
+                    <!--<input type="button" value="Add Option"><br><br>-->
+                    <div class="grid-item">
+                        <button type="submit" class="button-85" role="button">ADD QUESTION</button>
+                    </div>
+                </form>
+            `;
+        }
+        main.innerHTML = externalHTML;
+    }
+</script>
 <!-- Home Button -->
 <br>
 <form method="get" action="/">
-    <input type="submit" value="Return Home">
+    <div class="grid-item">
+        <button type="submit" class="button-85" role="button">RETURN HOME</button>
+    </div>
 </form>
 </body>
 </html>

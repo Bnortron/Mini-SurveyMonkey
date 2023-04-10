@@ -87,22 +87,13 @@ public class SurveyControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(status().is2xxSuccessful());
-        mockMvc.perform(post("/textquestion", "")
+        mockMvc.perform(post("/addtextquestion/1", "")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("description", "Do you like ice cream?")
                         .param("charLimit", "500"))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.view().name("index"))
-                .andExpect(status().is2xxSuccessful());
-        mockMvc.perform(get("/addquestion", ""))
-                .andDo(print()).andExpect(MockMvcResultMatchers.view().name("addquestion"));
-        mockMvc.perform(post("/addquestion", "")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("selectedSurvey", "1")
-                        .param("selectedQuestion", "1"))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.view().name("index"))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/survey?selectedSurvey=1"))
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

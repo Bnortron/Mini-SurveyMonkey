@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>View Questions</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <style>
         table {
             border-collapse: collapse;
@@ -46,7 +47,9 @@
 <!-- Home Button -->
 <br>
 <form method="get" action="/">
-    <input type="submit" value="Return Home">
+    <div class="grid-item">
+        <button type="submit" class="button-85" role="button">RETURN HOME</button>
+    </div>
 </form>
 </body>
 </html>
