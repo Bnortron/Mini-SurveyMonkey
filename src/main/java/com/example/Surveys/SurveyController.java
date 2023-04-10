@@ -91,6 +91,7 @@ public class SurveyController {
         return "viewsurveys";
     }
 
+    @GetMapping("/addquestion")
     public String selectQuestion(@RequestParam("survey") Long surveyId, Model model) {
         model.addAttribute("surveyId", surveyId);
         model.addAttribute("surveyquestion", new Question());
