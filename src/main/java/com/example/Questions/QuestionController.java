@@ -2,6 +2,8 @@ package com.example.Questions;
 
 import com.example.Responses.Response;
 import com.example.Responses.ResponseRepository;
+import com.example.Surveys.Survey;
+import com.example.Surveys.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +15,16 @@ import java.util.Optional;
 @Controller
 public class QuestionController {
     @Autowired
+    private final SurveyRepository surveyRepository;
+
+    @Autowired
     private final QuestionRepository questionRepository;
 
     @Autowired
     private final ResponseRepository responseRepository;
 
-    public QuestionController(QuestionRepository questionRepository, ResponseRepository responseRepository) {
+    public QuestionController(SurveyRepository surveyRepository, QuestionRepository questionRepository, ResponseRepository responseRepository) {
+        this.surveyRepository = surveyRepository;
         this.questionRepository = questionRepository;
         this.responseRepository = responseRepository;
     }
@@ -73,12 +79,16 @@ public class QuestionController {
         return "index";
     }
 
-    /**
-     * Select a Survey to view (Displays Survey properties - not survey questions)
-     *
-     * @param model
-     * @return
-     */
+    @GetMapping("/viewquestions/{id}")
+    public String viewQuestions(@PathVariable("id") Long id, Model model) {
+        Optional<Survey> survey = surveyRepository.findById(id);
+        if(survey.isPresent()) {
+            Iterable<Question> questions = questionRepository.findBySurvey(survey);
+            model.addAttribute("questions", questions);
+        }
+        return "/viewsurveys";
+    }
+
     @GetMapping("/selectedresponse")
     public String getSelectedResponse(@RequestParam(name = "selectedResponse") Long selectedResponseId, Model model) {
         // Get the selected response from the repository

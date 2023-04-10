@@ -1,11 +1,17 @@
 package com.example.Questions;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 @Entity
 public class NumberQuestion extends Question {
-    private int minRange; // starting number on num line
+    @Column(name = "min")
+    private int minRange;// starting number on num line
+
+    @Column(name = "max")
     private int maxRange; // final number on num line
+
+    @Column(name = "response")
     private int selectedValue = -1; // value user selects
 
     public NumberQuestion(int minRange, int maxRange) {

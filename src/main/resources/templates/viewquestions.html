@@ -36,9 +36,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="surveyquestion : ${surveyquestions}">
-        <td th:text="${surveyquestion.id}"></td>
-        <td th:text="${surveyquestion.description}"></td>
+    <tr th:each="quesion : ${surveys}">
+        <td th:text="${question.id}"></td>
+        <td th:text="${question.description}"></td>
         <td th:text="${surveyquestion.questionType}"></td>
     </tr>
     </tbody>

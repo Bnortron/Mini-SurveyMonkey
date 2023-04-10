@@ -1,14 +1,17 @@
 package com.example.Responses;
 
-import com.example.Questions.Question;
-import com.example.Questions.QuestionRepository;
-import com.example.Questions.QuestionType;
+import com.example.Questions.*;
+import com.example.Surveys.Survey;
 import com.example.Surveys.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,28 +31,55 @@ public class ResponseController {
     }
 
     @PostMapping("/submitresponses")
-    public String submitResponses(@RequestParam Map<String, String> responseParams) {
-        for (Map.Entry<String, String> entry : responseParams.entrySet()) {
-            if (entry.getKey().startsWith("question")) {
-                Long questionId = Long.parseLong(entry.getKey().substring(8));
-                Optional<Question> optionalQuestion = questionRepository.findById(questionId);
-                if (optionalQuestion.isPresent()) {
-                    Question question = optionalQuestion.get();
-                    Response response = new Response();
-                    response.setQuestion(question);
-                    if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE) {
-                        response.setResponse(entry.getValue());
-                    } else if (question.getQuestionType() == QuestionType.NUMBER_CHOICE_LINE) {
-                        response.setResponse(entry.getValue());
-                    } else if (question.getQuestionType() == QuestionType.TEXT) {
-                        response.setResponse(entry.getValue());
-                    }
-                    responseRepository.save(response);
-                }
-            }
+    public String submitResponses(@RequestParam Long surveyid, @RequestParam Map<String, String> allParams, Model model) {
+        // Print each of the responses to the console
+        System.out.println("Survey " + surveyid + " Responses:");
+        for (Map.Entry<String, String> entry : allParams.entrySet()) {
+            System.out.println("Question: " + entry.getKey());
+            System.out.println("Response: " + entry.getValue() + "\n");
         }
-        return "redirect:/";
+
+        // Find the Survey in the repository
+        Optional<Survey> surveyOptional = surveyRepository.findById(surveyid);
+        // Handle if Survey can't be found
+        if (surveyOptional.isEmpty()) {
+            return "survey not found!";
+        }
+        Survey survey = surveyOptional.get();
+        System.out.println("Survey " + survey.getId() + " located!");
+
+        // Get the responses for each question in the Survey
+        List<Response> responses = new ArrayList<>();
+        List<Question> questions = survey.getQuestions();
+        for (int i = 0; i < questions.size(); i++) {
+            Question question = questions.get(i); // Get the Question
+            String responseValue = allParams.get("responses[" + i + "]"); // Get the Response to Question
+
+            // Handle case of a blank Response to one of the Questions
+            if (responseValue == null || responseValue.isEmpty()) {
+                model.addAttribute("errorMessage", "Please answer all questions");
+                model.addAttribute("survey", survey);
+                return "showsurvey";
+            }
+
+            // Initialize Response & set H2 table
+            Response response = new Response();
+            response.setQuestion(question);
+            response.setQuestionType(question.getQuestionType().toString());
+            response.setResponse(responseValue);
+            response.setSurvey(survey);
+            responses.add(response);
+        }
+
+        // Save the responses to the database
+        responseRepository.saveAll(responses);
+
+        // Redirect user back home
+        model.addAttribute("survey", survey);
+        return "redirect:/survey?selectedSurvey=" + surveyid;
     }
+
+
 
 }
 

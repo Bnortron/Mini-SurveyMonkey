@@ -10,6 +10,12 @@ public class SurveyResult {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "question_num")
+    private int questionNum;
+
+    @Column(name = "num_Responses")
+    private int responseNum;
+
     public SurveyResult(Long id) {
         this.id = id;
     }
