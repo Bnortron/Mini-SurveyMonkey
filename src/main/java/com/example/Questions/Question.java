@@ -1,20 +1,27 @@
-package com.example;
+package com.example.Questions;
 
+import com.example.Responses.Response;
+import com.example.Surveys.Survey;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-public class SurveyQuestion {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     protected Long id;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id")
     protected Survey survey;
 
     @Enumerated(EnumType.STRING)
     protected QuestionType questionType;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Response> responses;
 
     protected String description;
     protected int questionOrder; // order of the question in the survey (1=first question, 2=second question,.., n=nth question in survey)
@@ -24,14 +31,15 @@ public class SurveyQuestion {
      *
      * @param id
      */
-    public SurveyQuestion(Long id) {
+    public Question(Long id) {
         this.id = id;
+        this.responses = new ArrayList<>();
     }
 
     /**
      * SurveyQuestion blank constructor
      */
-    public SurveyQuestion() {
+    public Question() {
 
     }
 
@@ -53,6 +61,7 @@ public class SurveyQuestion {
         this.id = id;
     }
 
+    // Getter & Setter for Survey this Question belongs to
     public Survey getSurvey() {
         return survey;
     }
@@ -61,14 +70,36 @@ public class SurveyQuestion {
         this.survey = survey;
     }
 
+    // Getter & Setter for list of responses
+
+    public void addResponse(Response response) {
+        if(responses == null) {
+            responses = new ArrayList<>();
+        }
+        responses.add(response);
+        response.setQuestion(this);
+    }
+
+    public List<Response> getResponses() {
+        if (responses == null) {
+            responses = new ArrayList<>();
+        }
+        return responses;
+    }
+
+
+    // Getter & Setter for the Question Type
     public QuestionType getQuestionType() {
         return questionType;
     }
+
+    public String questionTypeToString() { return this.questionType.toString(); }
 
     public void setQuestionType(QuestionType questionType) {
         this.questionType = questionType;
     }
 
+    // Getter & Setter for Question description
     public String getDescription() {
         return description;
     }
@@ -77,6 +108,7 @@ public class SurveyQuestion {
         this.description = description;
     }
 
+    // Getter & Setter for the order in the Survey that the question appears
     public int getOrder() {
         return questionOrder;
     }
@@ -84,4 +116,6 @@ public class SurveyQuestion {
     public void setOrder(int questionOrder) {
         this.questionOrder = questionOrder;
     }
+
+
 }

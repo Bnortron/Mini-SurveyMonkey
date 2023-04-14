@@ -1,14 +1,13 @@
-package com.example;
+package com.example.Questions;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class MultipleChoiceQuestion extends SurveyQuestion {
+public class MultipleChoiceQuestion extends Question {
     private int numChoices; // number of MC options user can select from
     private int selectedOption = -1; // the option the user selected
 

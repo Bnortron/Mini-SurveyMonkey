@@ -1,6 +1,9 @@
 package com.example;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.example.Questions.Question;
+import com.example.Surveys.Survey;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,8 +33,8 @@ class SurveyTest {
     @Test
     public void testSetQuestions() {
         Survey survey = new Survey();
-        List<SurveyQuestion> questions = survey.getQuestions();
-        questions.add(new SurveyQuestion());
+        List<Question> questions = survey.getQuestions();
+        questions.add(new Question());
         survey.setQuestions(questions);
         assertEquals(1, survey.getQuestions().size());
     }

@@ -25,24 +25,54 @@
     <p>Description: <span th:text="${survey.description}"></span></p>
     <p>Status: <span th:text="${survey.active} ? 'Active' : 'Inactive'"></span></p>
     <p>Questions: <span th:text="${survey.getQuestions().size()}"></span></p>
-    <form action="/response" method="POST">
-        <div th:each="question: ${survey.getQuestions()}" class="question">
-            <th:block th:switch="${question.getQuestionType()}">
-                <div th:case="${T(com.example.QuestionType).MULTIPLE_CHOICE}">
-                    <div th:replace="multiplechoicequestion.html :: mcq"></div>
+
+    <form action="#" th:action="@{/submitresponses}" method="post">
+        <input type="hidden" name="surveyid" th:value="${survey.id}" />
+
+        <div th:each="question, questionIndex : ${survey.questions}">
+            <h4 th:text="${question.description}"></h4>
+
+            <!-- For a Text question -->
+            <div th:if="${question.questionType == question.questionType.TEXT}">
+                <input type="text" th:name="'responses[' + ${questionIndex.index} + ']'" class="form-control" placeholder="Type your response here" required/>
+            </div>
+
+            <!-- For a Multiple choice question -->
+            <div th:if="${question.questionType == question.questionType.MULTIPLE_CHOICE}">
+                <div th:each="option : ${question.options}">
+                    <input type="radio" th:name="'responses[' + ${questionIndex.index} + ']'" th:value="${option}" required/>
+                    <label th:for="${option}" th:text="${option}"></label>
                 </div>
-                <div th:case="${T(com.example.QuestionType).TEXT}">
-                    <div th:replace="textquestion.html :: text"></div>
-                </div>
-                <div th:case="${T(com.example.QuestionType).NUMBER_CHOICE_LINE}">
-                    <div th:replace="numberquestion.html :: num"></div>
-                </div>
-            </th:block>
+            </div>
+
+            <!-- For a Number question -->
+            <div th:if="${question.questionType == question.questionType.NUMBER_CHOICE_LINE}">
+                <label>Choose a number:</label>
+                <input type="range" th:name="'responses[' + ${questionIndex.index} + ']'" th:min="${question.getMinRange()}" th:max="${question.getMaxRange()}" required/>
+            </div>
         </div>
-        <input th:if="${survey.active}" type="submit">
+        <input th:if="${survey.active}" type="submit" id="#submit-button">
+        <script>
+            document.querySelector("#submit-button").addEventListener("click", function(event) {
+                // Get all required input fields
+                var requiredFields = document.querySelectorAll("[required]");
+
+                // Check if all required fields have a value
+                for (var i = 0; i < requiredFields.length; i++) {
+                    if (!requiredFields[i].value) {
+                        // Display a popup message informing the user which field they need to fill out
+                        alert("Please fill out the " + requiredFields[i].name + " field.");
+                        event.preventDefault();
+                        return;
+                    }
+                }
+            });
+
+        </script>
     </form>
     <p> Add a Question to the Survey <a th:href="@{'/addquestion?survey=' + ${survey.id}}">here</a></p>
     <p> View Another Survey <a href="/selectsurvey">here</a></p>
+    <p> Return Home <a href="/">here</a></p>
 </div>
 <!-- Home Button -->
 <br>

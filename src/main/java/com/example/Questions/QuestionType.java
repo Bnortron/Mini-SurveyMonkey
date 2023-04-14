@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Questions;
 
 public enum QuestionType {
     MULTIPLE_CHOICE,

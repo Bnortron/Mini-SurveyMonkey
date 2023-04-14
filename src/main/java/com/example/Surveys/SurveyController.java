@@ -1,5 +1,7 @@
-package com.example;
+package com.example.Surveys;
 
+import com.example.Questions.*;
+import com.example.Responses.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,10 @@ import java.util.List;
 @Controller
 public class SurveyController {
     @Autowired
-    private final SurveyRepository surveyRepository;
+    private SurveyRepository surveyRepository;
 
     @Autowired
-    private final QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     public SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
         this.surveyRepository = surveyRepository;
@@ -93,7 +95,7 @@ public class SurveyController {
     @GetMapping("/addquestion")
     public String selectQuestion(@RequestParam("survey") Long surveyId, Model model) {
         model.addAttribute("surveyId", surveyId);
-        model.addAttribute("surveyquestion", new SurveyQuestion());
+        model.addAttribute("surveyquestion", new Question());
         return "addquestion";
     }
 
@@ -111,7 +113,7 @@ public class SurveyController {
         textQuestion.setSurvey(survey);
         //questionRepository.save(textQuestion);
 
-        List<SurveyQuestion> questions = survey.getQuestions();
+        List<Question> questions = survey.getQuestions();
         questions.add(textQuestion);
         survey.setQuestions(questions);
         surveyRepository.save(survey);
@@ -133,7 +135,7 @@ public class SurveyController {
         numberQuestion.setSurvey(survey);
         //questionRepository.save(numberQuestion);
 
-        List<SurveyQuestion> questions = survey.getQuestions();
+        List<Question> questions = survey.getQuestions();
         questions.add(numberQuestion);
         survey.setQuestions(questions);
         surveyRepository.save(survey);
@@ -158,7 +160,7 @@ public class SurveyController {
         mcQuestion.setSurvey(survey);
         //questionRepository.save(mcQuestion);
 
-        List<SurveyQuestion> questions = survey.getQuestions();
+        List<Question> questions = survey.getQuestions();
         questions.add(mcQuestion);
         survey.setQuestions(questions);
         surveyRepository.save(survey);
@@ -175,14 +177,14 @@ public class SurveyController {
         }
         Survey survey = surveyOptional.get();
 
-        Optional<SurveyQuestion> questionOptional = questionRepository.findById(selectedQuestionId);
+        Optional<Question> questionOptional = questionRepository.findById(selectedQuestionId);
         if (!questionOptional.isPresent()) {
             // handle the case where the question with the given id does not exist
             return "error";
         }
-        SurveyQuestion question = questionOptional.get();
+        Question question = questionOptional.get();
 
-        List<SurveyQuestion> questions = survey.getQuestions();
+        List<Question> questions = survey.getQuestions();
         questions.add(question);
         survey.setQuestions(questions);
         surveyRepository.save(survey);
@@ -227,4 +229,34 @@ public class SurveyController {
         return "redirect:/survey?selectedSurvey=" + id;
     }
 
+    /**
+    @GetMapping("/survey/{id}/viewresponses")
+    public String viewResponses(@PathVariable("id") Long id, Model model) {
+        Survey survey = surveyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+        model.addAttribute("survey", survey);
+        return "viewresponses";
+    }
+     **/
+
+    @GetMapping("/viewresults")
+    public String viewResults(Model model) {
+        List<Survey> surveys = (List<Survey>) surveyRepository.findAll();
+        model.addAttribute("surveys", surveys);
+        model.addAttribute("question", new Question()); // add this line
+        return "viewresults";
+    }
+
+
+    @GetMapping("/surveys/{id}/questions")
+    public String viewResponses(@PathVariable("id") Long id, Model model) {
+        // Retrieve the survey and questions data based on the surveyId
+        Optional<Survey> survey = surveyRepository.findById(id);
+        List<Question> questions = questionRepository.findBySurvey(Optional.of(survey.get()));
+
+        // Add the survey and questions data to the model for use in the Thymeleaf template
+        model.addAttribute("survey", survey.get());
+        model.addAttribute("questions", questions);
+
+        return "viewresponses";
+    }
 }

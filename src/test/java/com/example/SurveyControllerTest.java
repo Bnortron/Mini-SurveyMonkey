@@ -1,33 +1,26 @@
 package com.example;
 
+import com.example.Questions.Question;
+import com.example.Questions.TextQuestion;
+import com.example.Surveys.Survey;
+import com.example.Surveys.SurveyRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Optional;
-
 import static net.bytebuddy.matcher.ElementMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
+
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.samePropertyValuesAs;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import static org.hamcrest.Matchers.*;
 
 
 @SpringBootTest
@@ -62,6 +55,7 @@ public class SurveyControllerTest {
         Survey s = new Survey();
         s.setTitle("test");
         s.setDescription("test");
+        s.totalResponses();
         mockMvc.perform(post("/survey", "")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "test")
@@ -72,7 +66,7 @@ public class SurveyControllerTest {
         mockMvc.perform(get("/viewsurveys", ""))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("surveys",
-                        Matchers.everyItem(samePropertyValuesAs(s, "id", "questions", "status"))));
+                        Matchers.everyItem(samePropertyValuesAs(s, "id", "questions", "status","responses"))));
         mockMvc.perform(get("/survey?selectedSurvey=1", ""))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.view().name("showsurvey"))
@@ -108,16 +102,17 @@ public class SurveyControllerTest {
         Survey s = new Survey();
         s.setTitle("test");
         s.setDescription("test");
-        ArrayList<SurveyQuestion> questions = new ArrayList<>();
+        ArrayList<Question> questions = new ArrayList<>();
         TextQuestion txtQ = new TextQuestion(500);
         txtQ.setDescription("Do you like ice cream?");
         questions.add(txtQ);
         s.setQuestions(questions);
+        s.totalResponses();
 
         mockMvc.perform(get("/survey?selectedSurvey=1"))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.model().attribute("survey",
-                        Matchers.samePropertyValuesAs(s, "id", "questions", "status")))
+                        Matchers.samePropertyValuesAs(s, "id", "questions", "status", "responses")))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.view().name("showsurvey"));
     }

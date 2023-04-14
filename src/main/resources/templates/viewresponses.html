@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Responses</title>
+  <link th:href="@{/css/styles.css}" rel="stylesheet" />
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1em;
+    }
+
+    th, td {
+      padding: 0.5em;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ddd;
+    }
+
+    th:last-child,
+    td:last-child {
+      text-align: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>View Responses</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Question ID</th>
+    <th>Question Description</th>
+    <th>Number of Responses</th>
+    <th>View Responses</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="question : ${survey.questions}">
+    <td th:text="${question.id}"></td>
+    <td th:text="${question.description}"></td>
+    <td th:text="${question.getResponses().size()}"></td>
+    <td><a th:href="@{'/surveys/' + ${survey.id} + '/questions/' + ${question.id} + '/responses'}">View Responses</a></td>
+  </tr>
+  </tbody>
+</table>
+<!-- Home Button -->
+<br>
+<form method="get" action="/">
+  <div class="grid-item">
+    <button type="submit" class="button-85" role="button">RETURN HOME</button>
+  </div>
+</form>
+</body>
+</html>
